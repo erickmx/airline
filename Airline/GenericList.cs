@@ -33,14 +33,14 @@ namespace Airline
 
         public void qSort(CompareObj<T> fun)
         {
-            qSort(0, this.Count, fun);
+            qSort(0, this.Count-1, fun);
         }
 
         public void qSort(int leftEdge, int rightEdge, CompareObj<T> fun)
         {
             int i = leftEdge;
             int j = rightEdge;
-            int medio = (leftEdge + rightEdge) / 2;
+            int medio = (leftEdge + rightEdge) / 2; 
             T pivote = this[medio];
 
             while (i <= j)

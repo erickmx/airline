@@ -28,28 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.graphMaterialLabel = new MaterialSkin.Controls.MaterialLabel();
+            this.graphPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // graphMaterialLabel
+            // graphPanel
             // 
-            this.graphMaterialLabel.Depth = 0;
-            this.graphMaterialLabel.Font = new System.Drawing.Font("Roboto", 11F);
-            this.graphMaterialLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.graphMaterialLabel.Location = new System.Drawing.Point(3, 135);
-            this.graphMaterialLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.graphMaterialLabel.Name = "graphMaterialLabel";
-            this.graphMaterialLabel.Size = new System.Drawing.Size(524, 328);
-            this.graphMaterialLabel.TabIndex = 0;
-            this.graphMaterialLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.graphMaterialLabel_Paint);
-            this.graphMaterialLabel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphMaterialLabel_MouseClick);
+            this.graphPanel.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.graphPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.graphPanel.Location = new System.Drawing.Point(3, 135);
+            this.graphPanel.Name = "graphPanel";
+            this.graphPanel.Size = new System.Drawing.Size(524, 328);
+            this.graphPanel.TabIndex = 1;
+            this.graphPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.graphMaterialLabel_Paint);
+            this.graphPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphMaterialLabel_MouseClick);
             // 
             // GraphForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 480);
-            this.Controls.Add(this.graphMaterialLabel);
+            this.Controls.Add(this.graphPanel);
             this.Name = "GraphForm";
             this.Text = "GraphForm";
             this.ResumeLayout(false);
@@ -57,7 +55,6 @@
         }
 
         #endregion
-
-        private MaterialSkin.Controls.MaterialLabel graphMaterialLabel;
+        private System.Windows.Forms.Panel graphPanel;
     }
 }

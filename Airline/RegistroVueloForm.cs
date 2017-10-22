@@ -60,14 +60,13 @@ namespace Airline
                 if (!graph.existVertex(v.getOrigen()))
                 {
                     graph.addVertex(v.getOrigen());
-                    GraphForm grafoVentana = new GraphForm(ref graph);
+                    GraphForm grafoVentana = new GraphForm(ref graph, 1);
                     this.Hide();
-                    grafoVentana.Show();
+                    grafoVentana.ShowDialog();
                     this.Show();
                     int x = grafoVentana.getPosX();
                     int y = grafoVentana.getPosY();
-
-                    Console.WriteLine("Puntos de 1 x: " + x + " Y: " + y);
+                    
                     if (x > -1 && y > -1)
                     {
                         graph.setCityPoints(v.getOrigen(), x, y);
@@ -76,13 +75,12 @@ namespace Airline
                 if (!graph.existVertex(v.getDestino()))
                 {
                     graph.addVertex(v.getDestino());
-                    GraphForm grafoVentana = new GraphForm(ref graph);
+                    GraphForm grafoVentana = new GraphForm(ref graph, 1);
                     this.Hide();
                     grafoVentana.ShowDialog();
                     this.Show();
                     int x = grafoVentana.getPosX();
                     int y = grafoVentana.getPosY();
-                    Console.WriteLine("Puntos de 2 x: " + x + " Y: " + y);
                     if (x > -1 && y > -1)
                     {
                         graph.setCityPoints(v.getDestino(), x, y);

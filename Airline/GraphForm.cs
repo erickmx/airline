@@ -19,12 +19,14 @@ namespace Airline
     {
 
         Graph graph;
+        int opc;
         int posX;
         int posY;
 
-        public GraphForm(ref Graph graph)
+        public GraphForm(ref Graph graph, int opc)
         {
             this.graph = graph;
+            this.opc = opc;
 
             InitializeComponent();
 
@@ -38,13 +40,11 @@ namespace Airline
 
         public int getPosX()
         {
-            Console.WriteLine("Posicion x: " + posX);
             return posX;
         }
 
         public int getPosY()
         {
-            Console.WriteLine("Posicion y: " + posY);
             return posY;
         }
 
@@ -75,13 +75,13 @@ namespace Airline
             Pen pluma2 = new Pen(Color.White, 13);
             SolidBrush mensajes = new SolidBrush(Color.Red);
             //graphPanel.CreateGraphics().DrawEllipse(pluma1, 20, 20, graphPanel.Width - 15, graphPanel.Height - 15);
-            radio = (graphMaterialLabel.Height - 30) / 2;
+            radio = (graphPanel.Height - 30) / 2;
             angulo = 2 * Math.PI / div;
             for (int i = 0; i < graph.getNodesCount(); i++)
             {
 
                 nom = graph.getNode(i).getCiudad().getName();
-                if (graph.getNode(i).getCiudad().getPos() < 0)
+                if (graph.getNode(i).getCiudad().getPos() < 0 && opc == 0)
                 {
                     x = Convert.ToInt32(Math.Cos(i * angulo) * radio + 20 + radio);
                     y = Convert.ToInt32(Math.Sin(i * angulo) * radio + 20 + radio);
@@ -93,8 +93,8 @@ namespace Airline
                     y = graph.getNode(i).getCiudad().getPosY();
                 }
 
-                graphMaterialLabel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 15, 15);
-                graphMaterialLabel.CreateGraphics().DrawString(Convert.ToString(nom), DefaultFont, mensajes, x - 9, y - 9);
+                graphPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 15, 15);
+                graphPanel.CreateGraphics().DrawString(Convert.ToString(nom), DefaultFont, mensajes, x - 9, y - 9);
 
             }
 
@@ -120,7 +120,7 @@ namespace Airline
                     destinyX = this.calculateX(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX());
                     destinyY = this.calculateY(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY());
 
-                    graphMaterialLabel.CreateGraphics().DrawLine(pluma1,
+                    graphPanel.CreateGraphics().DrawLine(pluma1,
                         originX,
                         originY,
                         destinyX,
@@ -131,7 +131,7 @@ namespace Airline
                     letter = graph.getNode(j).getAdyEl(k).getPondCosto() + ", " + graph.getNode(j).getAdyEl(k).getPondTime();
 
                     //graphPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - 9, letterY - 9);
-                    graphMaterialLabel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - letter.Length, letterY - 15);
+                    graphPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - letter.Length, letterY - 15);
                 }
             }
 
@@ -142,7 +142,7 @@ namespace Airline
         private int calculateX(int x)
         {
             int diameter = 15;
-            int posX = this.graphMaterialLabel.Width;
+            int posX = this.graphPanel.Width;
             posX = posX / 4;
             if (x > posX * 0 && x < posX * 1)
             {
@@ -167,7 +167,7 @@ namespace Airline
         private int calculateY(int y)
         {
             int diameter = 15;
-            int posY = this.graphMaterialLabel.Height + 15;
+            int posY = this.graphPanel.Height + 15;
             posY = posY / 4;
             if (y > posY * 0 && y < posY * 1)
             {

@@ -31,7 +31,7 @@ namespace Airline
         string rutaVuelo;
 
         // rutasTab use
-        // nothing :C
+        char cityRoute;
 
         public MainForm(ref GenericList<Vuelo> flyList, Graph graph)
         {
@@ -60,6 +60,7 @@ namespace Airline
             this.comprarVueloMaterialFlatButton.Enabled = false;
 
             // rutasTab config
+            this.cityRoute = '\n';
             this.startDrawRuta();
 
 
@@ -445,6 +446,14 @@ namespace Airline
             showListVuelos(tmp);
         }
 
+        private void sortVuelosMaterialFlatButton_Click(object sender, EventArgs e)
+        {
+            if (this.destinyVueloRadioButton.Checked)
+            {
+                this.flyList.qSort((a, b) => a.compareTo(b, 2));
+            }
+        }
+
 
         /*
          * vuelosTab End
@@ -470,7 +479,7 @@ namespace Airline
             Pen pluma2 = new Pen(Color.White, 13);
             SolidBrush mensajes = new SolidBrush(Color.Red);
             //graphPanel.CreateGraphics().DrawEllipse(pluma1, 20, 20, graphPanel.Width - 15, graphPanel.Height - 15);
-            radio = (rutaMaterialLabel.Height - 30) / 2;
+            radio = (rutaPanel.Height - 30) / 2;
             angulo = 2 * Math.PI / div;
             for (int i = 0; i < graph.getNodesCount(); i++)
             {
@@ -488,8 +497,8 @@ namespace Airline
                     y = graph.getNode(i).getCiudad().getPosY();
                 }
 
-                rutaMaterialLabel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 15, 15);
-                rutaMaterialLabel.CreateGraphics().DrawString(Convert.ToString(nom), DefaultFont, mensajes, x - 9, y - 9);
+                rutaPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 15, 15);
+                rutaPanel.CreateGraphics().DrawString(Convert.ToString(nom), DefaultFont, mensajes, x - 9, y - 9);
 
             }
 
@@ -515,18 +524,24 @@ namespace Airline
                     destinyX = this.calculateXRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX());
                     destinyY = this.calculateYRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY());
 
-                    this.rutaMaterialLabel.CreateGraphics().DrawLine(pluma1,
+                    this.rutaPanel.CreateGraphics().DrawLine(pluma1,
                         originX,
                         originY,
                         destinyX,
                         destinyY);
 
-                    letterX = (graph.getNode(j).getCiudad().getPosX() + graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX()) / 2;
-                    letterY = (graph.getNode(j).getCiudad().getPosY() + graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY()) / 2;
+                    letterX = (
+                        calculateXRuta(graph.getNode(j).getCiudad().getPosX()) + 
+                        calculateXRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX())
+                        ) / 2;
+                    letterY = (
+                        calculateYRuta(graph.getNode(j).getCiudad().getPosY()) + 
+                        calculateYRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY())
+                        ) / 2;
                     letter = graph.getNode(j).getAdyEl(k).getPondCosto() + ", " + graph.getNode(j).getAdyEl(k).getPondTime();
 
                     //graphPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - 9, letterY - 9);
-                    rutaMaterialLabel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - letter.Length, letterY - 15);
+                    rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX, letterY);
                 }
             }
 
@@ -535,7 +550,7 @@ namespace Airline
         private int calculateXRuta(int x)
         {
             int diameter = 15;
-            int posX = this.rutaMaterialLabel.Width;
+            int posX = this.rutaPanel.Width;
             posX = posX / 4;
             if (x > posX * 0 && x < posX * 1)
             {
@@ -560,7 +575,7 @@ namespace Airline
         private int calculateYRuta(int y)
         {
             int diameter = 15;
-            int posY = this.rutaMaterialLabel.Height + 15;
+            int posY = this.rutaPanel.Height + 15;
             posY = posY / 4;
             if (y > posY * 0 && y < posY * 1)
             {
@@ -581,6 +596,7 @@ namespace Airline
             return 0;
         }
 
+        // rutaPanel event
         private void rutaMaterialLabel_Paint(object sender, PaintEventArgs e)
         {
             startDrawRuta();

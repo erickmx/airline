@@ -108,6 +108,9 @@ namespace Airline
             int valor = 0;
             switch (opc)
             {
+                case 0:
+                    valor = ruta.CompareTo(v.ruta);
+                    break;
                 case 1:
                     if (this.origen > v.origen)
                     {
