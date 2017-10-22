@@ -42,8 +42,8 @@
             this.deletePasajeromaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.vueloTabPage = new System.Windows.Forms.TabPage();
             this.sortVuelosMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.tiempoMaterialRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
-            this.costoMaterialRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
+            this.timeVueloRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
+            this.costoVueloRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
             this.destinyVueloRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
             this.originVueloRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
             this.routeVueloRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
@@ -56,8 +56,8 @@
             this.comprarVueloMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.deleteVueloMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.rutaTabPage = new System.Windows.Forms.TabPage();
-            this.mostrarRutaMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.rutaPanel = new System.Windows.Forms.Panel();
+            this.mostrarRutaMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.menuMaterialTabControl.SuspendLayout();
             this.pasajeroTabPage.SuspendLayout();
             this.vueloTabPage.SuspendLayout();
@@ -234,8 +234,8 @@
             // 
             this.vueloTabPage.BackColor = System.Drawing.Color.White;
             this.vueloTabPage.Controls.Add(this.sortVuelosMaterialFlatButton);
-            this.vueloTabPage.Controls.Add(this.tiempoMaterialRadioButton);
-            this.vueloTabPage.Controls.Add(this.costoMaterialRadioButton);
+            this.vueloTabPage.Controls.Add(this.timeVueloRadioButton);
+            this.vueloTabPage.Controls.Add(this.costoVueloRadioButton);
             this.vueloTabPage.Controls.Add(this.destinyVueloRadioButton);
             this.vueloTabPage.Controls.Add(this.originVueloRadioButton);
             this.vueloTabPage.Controls.Add(this.routeVueloRadioButton);
@@ -269,39 +269,39 @@
             this.sortVuelosMaterialFlatButton.UseVisualStyleBackColor = true;
             this.sortVuelosMaterialFlatButton.Click += new System.EventHandler(this.sortVuelosMaterialFlatButton_Click);
             // 
-            // tiempoMaterialRadioButton
+            // timeVueloRadioButton
             // 
-            this.tiempoMaterialRadioButton.AutoSize = true;
-            this.tiempoMaterialRadioButton.Depth = 0;
-            this.tiempoMaterialRadioButton.Font = new System.Drawing.Font("Roboto", 10F);
-            this.tiempoMaterialRadioButton.Location = new System.Drawing.Point(532, 171);
-            this.tiempoMaterialRadioButton.Margin = new System.Windows.Forms.Padding(0);
-            this.tiempoMaterialRadioButton.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.tiempoMaterialRadioButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.tiempoMaterialRadioButton.Name = "tiempoMaterialRadioButton";
-            this.tiempoMaterialRadioButton.Ripple = true;
-            this.tiempoMaterialRadioButton.Size = new System.Drawing.Size(76, 30);
-            this.tiempoMaterialRadioButton.TabIndex = 9;
-            this.tiempoMaterialRadioButton.TabStop = true;
-            this.tiempoMaterialRadioButton.Text = "Tiempo";
-            this.tiempoMaterialRadioButton.UseVisualStyleBackColor = true;
+            this.timeVueloRadioButton.AutoSize = true;
+            this.timeVueloRadioButton.Depth = 0;
+            this.timeVueloRadioButton.Font = new System.Drawing.Font("Roboto", 10F);
+            this.timeVueloRadioButton.Location = new System.Drawing.Point(532, 171);
+            this.timeVueloRadioButton.Margin = new System.Windows.Forms.Padding(0);
+            this.timeVueloRadioButton.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.timeVueloRadioButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.timeVueloRadioButton.Name = "timeVueloRadioButton";
+            this.timeVueloRadioButton.Ripple = true;
+            this.timeVueloRadioButton.Size = new System.Drawing.Size(76, 30);
+            this.timeVueloRadioButton.TabIndex = 9;
+            this.timeVueloRadioButton.TabStop = true;
+            this.timeVueloRadioButton.Text = "Tiempo";
+            this.timeVueloRadioButton.UseVisualStyleBackColor = true;
             // 
-            // costoMaterialRadioButton
+            // costoVueloRadioButton
             // 
-            this.costoMaterialRadioButton.AutoSize = true;
-            this.costoMaterialRadioButton.Depth = 0;
-            this.costoMaterialRadioButton.Font = new System.Drawing.Font("Roboto", 10F);
-            this.costoMaterialRadioButton.Location = new System.Drawing.Point(532, 141);
-            this.costoMaterialRadioButton.Margin = new System.Windows.Forms.Padding(0);
-            this.costoMaterialRadioButton.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.costoMaterialRadioButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.costoMaterialRadioButton.Name = "costoMaterialRadioButton";
-            this.costoMaterialRadioButton.Ripple = true;
-            this.costoMaterialRadioButton.Size = new System.Drawing.Size(65, 30);
-            this.costoMaterialRadioButton.TabIndex = 8;
-            this.costoMaterialRadioButton.TabStop = true;
-            this.costoMaterialRadioButton.Text = "Costo";
-            this.costoMaterialRadioButton.UseVisualStyleBackColor = true;
+            this.costoVueloRadioButton.AutoSize = true;
+            this.costoVueloRadioButton.Depth = 0;
+            this.costoVueloRadioButton.Font = new System.Drawing.Font("Roboto", 10F);
+            this.costoVueloRadioButton.Location = new System.Drawing.Point(532, 141);
+            this.costoVueloRadioButton.Margin = new System.Windows.Forms.Padding(0);
+            this.costoVueloRadioButton.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.costoVueloRadioButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.costoVueloRadioButton.Name = "costoVueloRadioButton";
+            this.costoVueloRadioButton.Ripple = true;
+            this.costoVueloRadioButton.Size = new System.Drawing.Size(65, 30);
+            this.costoVueloRadioButton.TabIndex = 8;
+            this.costoVueloRadioButton.TabStop = true;
+            this.costoVueloRadioButton.Text = "Costo";
+            this.costoVueloRadioButton.UseVisualStyleBackColor = true;
             // 
             // destinyVueloRadioButton
             // 
@@ -476,6 +476,15 @@
             this.rutaTabPage.Text = "Rutas";
             this.rutaTabPage.Enter += new System.EventHandler(this.rutaTabPage_Enter);
             // 
+            // rutaPanel
+            // 
+            this.rutaPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.rutaPanel.Location = new System.Drawing.Point(3, 3);
+            this.rutaPanel.Name = "rutaPanel";
+            this.rutaPanel.Size = new System.Drawing.Size(524, 328);
+            this.rutaPanel.TabIndex = 2;
+            this.rutaPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rutaMaterialLabel_Paint);
+            // 
             // mostrarRutaMaterialFlatButton
             // 
             this.mostrarRutaMaterialFlatButton.AutoSize = true;
@@ -492,15 +501,6 @@
             this.mostrarRutaMaterialFlatButton.Text = "Mostrar";
             this.mostrarRutaMaterialFlatButton.UseVisualStyleBackColor = true;
             this.mostrarRutaMaterialFlatButton.Click += new System.EventHandler(this.mostrarRutaMaterialFlatButton_Click);
-            // 
-            // rutaPanel
-            // 
-            this.rutaPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.rutaPanel.Location = new System.Drawing.Point(3, 3);
-            this.rutaPanel.Name = "rutaPanel";
-            this.rutaPanel.Size = new System.Drawing.Size(524, 328);
-            this.rutaPanel.TabIndex = 2;
-            this.rutaPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rutaMaterialLabel_Paint);
             // 
             // MainForm
             // 
@@ -550,8 +550,8 @@
         private MaterialSkin.Controls.MaterialRadioButton routeVueloRadioButton;
         private MaterialSkin.Controls.MaterialSingleLineTextField searchVueloLineTextField;
         private MaterialSkin.Controls.MaterialFlatButton mostrarRutaMaterialFlatButton;
-        private MaterialSkin.Controls.MaterialRadioButton tiempoMaterialRadioButton;
-        private MaterialSkin.Controls.MaterialRadioButton costoMaterialRadioButton;
+        private MaterialSkin.Controls.MaterialRadioButton timeVueloRadioButton;
+        private MaterialSkin.Controls.MaterialRadioButton costoVueloRadioButton;
         private MaterialSkin.Controls.MaterialFlatButton sortVuelosMaterialFlatButton;
         private System.Windows.Forms.Panel rutaPanel;
     }

@@ -448,10 +448,59 @@ namespace Airline
 
         private void sortVuelosMaterialFlatButton_Click(object sender, EventArgs e)
         {
-            if (this.destinyVueloRadioButton.Checked)
+            this.vueloMaterialListView.Items.Clear();
+            GenericList<Vuelo> tmp;
+
+            if (this.routeVueloRadioButton.Checked)
+            {
+                this.flyList.qSort((a, b) => a.compareTo(b, 0));
+            }
+            else if(this.originVueloRadioButton.Checked)
+            {
+                this.flyList.qSort((a, b) => a.compareTo(b, 1));
+            }
+            else if (this.destinyVueloRadioButton.Checked)
             {
                 this.flyList.qSort((a, b) => a.compareTo(b, 2));
             }
+            else if(this.costoVueloRadioButton.Checked)
+            {
+                this.flyList.qSort((a, b) => a.compareTo(b, 3));
+            }
+            else if(this.timeVueloRadioButton.Checked)
+            {
+                this.flyList.qSort((a, b) => a.compareTo(b, 4));
+            }
+
+            
+            if (searchVueloLineTextField.TextLength == 0)
+            {
+                showListVuelos();
+            }
+            else if (this.routeVueloRadioButton.Checked)
+            {
+                // filterFunc<string, Vuelo> searchFly = (cad, v) => { return validSearch(v.ToString(), cad); };
+                filterFunc<string, Vuelo> searchFly = (cad, v) => v.ToString().Contains(cad);
+                tmp = flyList.findDatas(this.searchVueloLineTextField.Text.ToString(), searchFly);
+                showListVuelos(tmp);
+            }
+            else if (this.originVueloRadioButton.Checked)
+            {
+                filterFunc<string, Vuelo> searchOrigin = (cad, v) => cad[0].Equals(v.getOrigen()) && cad.Length == 1;
+                tmp = flyList.findDatas(this.searchVueloLineTextField.Text.ToString(), searchOrigin);
+                showListVuelos(tmp);
+            }
+            else if (this.destinyVueloRadioButton.Checked)
+            {
+                filterFunc<string, Vuelo> searchDestiny = (cad, v) => cad[0].Equals(v.getDestino()) && cad.Length == 1;
+                tmp = flyList.findDatas(this.searchVueloLineTextField.Text.ToString(), searchDestiny);
+                showListVuelos(tmp);
+            }
+            else
+            {
+                showListVuelos();
+            }
+
         }
 
 
