@@ -33,7 +33,10 @@ namespace Airline
 
         public void qSort(CompareObj<T> fun)
         {
-            qSort(0, this.Count-1, fun);
+            if(this.Count > 0)
+            {
+                qSort(0, this.Count - 1, fun);
+            }
         }
 
         public void qSort(int leftEdge, int rightEdge, CompareObj<T> fun)

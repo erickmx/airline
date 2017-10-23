@@ -26,6 +26,7 @@ namespace Airline
         string vueloPasajero;
         string nombrePasajero;
         int asientoPasajero;
+        GenericList<Pasajero> pasajerosList;
 
         // vuelosTab use
         string rutaVuelo;
@@ -53,6 +54,7 @@ namespace Airline
                 );
 
             // pasajerosTab config
+            this.pasajerosList = new GenericList<Pasajero>();
             showListPasajeros();
 
             // vuelosTab config
@@ -70,7 +72,9 @@ namespace Airline
 
         private void pasajeroTabPage_Enter(object sender, EventArgs e)
         {
-            this.displayContentPasajero();
+            showListPasajeros();
+            this.ordenarPasajeroFlatButton.PerformClick();
+            this.displayContentPasajero(pasajerosList);
         }
 
         private void vueloTabPage_Enter(object sender, EventArgs e)
@@ -117,10 +121,12 @@ namespace Airline
         private void showListPasajeros()
         {
             this.pasajeroMaterialListView.Items.Clear();
+            this.pasajerosList.Clear();
             foreach (Vuelo v in this.flyList)
             {
-                showListPasajeros(v.getListaPasajeros());
+                v.getListaPasajeros().ForEach( pas => pasajerosList.Add(pas) );
             }
+            showListPasajeros(this.pasajerosList);
         }
 
         private void showListPasajeros(GenericList<Pasajero> listaP)
@@ -141,27 +147,29 @@ namespace Airline
 
         private void deletePasajeromaterialFlatButton_Click(object sender, EventArgs e)
         {
+            this.pasajeroMaterialListView.Items.Clear();
             if (nombrePasajero == " " && vueloPasajero == " ")
             {
                 MessageBox.Show("No se puede eliminar el elemento", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (this.searchPasajeroLineTextField.Text.Length == 0)
             {
-                showListPasajeros();
+                showListPasajeros(pasajerosList);
             }
             if (vueloPasajero.Length > 0)
             {
-                this.flyList.ForEach((v) => {
+                foreach(Vuelo v in flyList)
+                {
                     if (vueloPasajero.CompareTo(v.ToString()) == 0)
                     {
-                        v.getListaPasajeros().RemoveAll((pas) =>
-                          nombrePasajero.CompareTo(pas.getCompleteName()) == 0 && asientoPasajero == pas.getNumeroAsiento()
+                        v.getListaPasajeros().RemoveAll(
+                            pas => nombrePasajero.CompareTo(pas.getCompleteName()) == 0 && asientoPasajero == pas.getNumeroAsiento()
                         );
                         v.setAsientosDisp(v.getAsientosDip() + 1);
                     }
-                });
-
-                displayContentPasajero();
+                }
+                pasajerosList.RemoveAll( pas => nombrePasajero.CompareTo(pas.getCompleteName()) == 0 && asientoPasajero == pas.getNumeroAsiento() );
+                displayContentPasajero(pasajerosList);
 
             }
         }
@@ -176,66 +184,59 @@ namespace Airline
 
         private void searchPasajeroLineTextField_TextChanged(object sender, EventArgs e)
         {
-            displayContentPasajero();
+            displayContentPasajero(pasajerosList);
         }
 
-        public void displayContentPasajero()
+        public void displayContentPasajero(GenericList<Pasajero> lp)
         {
+            this.pasajeroMaterialListView.Items.Clear();
             if (searchPasajeroLineTextField.TextLength == 0)
             {
-                showListPasajeros();
+                showListPasajeros(lp);
             }
             else if (this.flyPasajeroRadioButton.Checked)
             {
-                addByFly();
+                addByFly(lp);
             }
             else if (this.asientoPasajeroRadioButton.Checked)
             {
-                addBySit();
+                addBySit(lp);
             }
             else if (this.namePasajeroRadioButton.Checked)
             {
-                addByName();
+                addByName(lp);
             }
         }
 
-        private void addByName()
+        private void addByName(GenericList<Pasajero> lp)
         {
             this.pasajeroMaterialListView.Items.Clear();
             GenericList<Pasajero> tmp = new GenericList<Pasajero>();
-
-            foreach (Vuelo v in this.flyList)
+            foreach(Pasajero pas in lp) 
             {
-                for (int i = 0; i < v.getListaPasajeros().Count; i++)
+                if (pas.getCompleteName().Contains(searchPasajeroLineTextField.Text.ToString()))
                 {
-                    if (v.getListaPasajeros()[i].getCompleteName().Contains(searchPasajeroLineTextField.Text.ToString()))
-                    {
-                        tmp.Add(v.getListaPasajeros()[i]);
-                    }
+                    tmp.Add(pas);
                 }
             }
             showListPasajeros(tmp);
         }
 
-        private void addByFly()
+        private void addByFly(GenericList<Pasajero> lp)
         {
             this.pasajeroMaterialListView.Items.Clear();
             GenericList<Pasajero> tmp = new GenericList<Pasajero>();
-
-            foreach (Vuelo v in this.flyList)
+            foreach (Pasajero pas in lp)
             {
-                for (int i = 0; i < v.getListaPasajeros().Count; i++)
+                if (pas.getVuelo().Contains(searchPasajeroLineTextField.Text.ToString()))
                 {
-                    if (v.getListaPasajeros()[i].getVuelo().Contains(searchPasajeroLineTextField.Text.ToString()))
-                    {
-                        tmp.Add(v.getListaPasajeros()[i]);
-                    }
+                    tmp.Add(pas);
                 }
             }
             showListPasajeros(tmp);
         }
 
-        private void addBySit()
+        private void addBySit(GenericList<Pasajero> listap)
         {
             try
             {
@@ -244,15 +245,12 @@ namespace Airline
                 asi--;
 
                 GenericList<Pasajero> lp = new GenericList<Pasajero>();
-
-                foreach (Vuelo v in flyList)
+                foreach(Pasajero pas in listap)
                 {
-                    v.getListaPasajeros().ForEach((pas) => {
-                        if (asi == pas.getNumeroAsiento())
-                        {
-                            lp.Add(pas);
-                        }
-                    });
+                    if (asi == pas.getNumeroAsiento())
+                    {
+                        lp.Add(pas);
+                    }
                 }
                 this.showListPasajeros(lp);
             }
@@ -264,17 +262,36 @@ namespace Airline
 
         private void flyPasajeroRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            displayContentPasajero();
+            displayContentPasajero(pasajerosList);
         }
 
         private void asientoPasajeroRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            displayContentPasajero();
+            displayContentPasajero(pasajerosList);
         }
 
         private void namePasajeroRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            displayContentPasajero();
+            displayContentPasajero(pasajerosList);
+        }
+
+
+        private void ordenarPasajeroFlatButton_Click(object sender, EventArgs e)
+        {
+            this.pasajeroMaterialListView.Items.Clear();
+            if(this.namePasajeroRadioButton.Checked)
+            {
+                pasajerosList.qSort( (a, b) => a.compareTo(b, 1) );
+            }
+            else if(this.flyPasajeroRadioButton.Checked)
+            {
+                pasajerosList.qSort( (a, b) => a.compareTo(b, 2) );
+            }
+            else if(this.asientoPasajeroRadioButton.Checked)
+            {
+                pasajerosList.qSort( (a, b) => a.compareTo(b, 3) );
+            }
+            displayContentPasajero(pasajerosList);
         }
 
         /*
@@ -655,6 +672,7 @@ namespace Airline
         {
             startDrawRuta();
         }
+
 
         /*
          * rutasTab End

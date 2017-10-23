@@ -31,6 +31,7 @@
             this.menuMaterialTabSelector = new MaterialSkin.Controls.MaterialTabSelector();
             this.menuMaterialTabControl = new MaterialSkin.Controls.MaterialTabControl();
             this.pasajeroTabPage = new System.Windows.Forms.TabPage();
+            this.ordenarPasajeroFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.pasajeroMaterialListView = new MaterialSkin.Controls.MaterialListView();
             this.nombreColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.rutaColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -91,6 +92,7 @@
             // pasajeroTabPage
             // 
             this.pasajeroTabPage.BackColor = System.Drawing.Color.White;
+            this.pasajeroTabPage.Controls.Add(this.ordenarPasajeroFlatButton);
             this.pasajeroTabPage.Controls.Add(this.pasajeroMaterialListView);
             this.pasajeroTabPage.Controls.Add(this.searchPasajeroLineTextField);
             this.pasajeroTabPage.Controls.Add(this.namePasajeroRadioButton);
@@ -104,6 +106,23 @@
             this.pasajeroTabPage.TabIndex = 0;
             this.pasajeroTabPage.Text = "Pasajeros";
             this.pasajeroTabPage.Enter += new System.EventHandler(this.pasajeroTabPage_Enter);
+            // 
+            // ordenarPasajeroFlatButton
+            // 
+            this.ordenarPasajeroFlatButton.AutoSize = true;
+            this.ordenarPasajeroFlatButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ordenarPasajeroFlatButton.Depth = 0;
+            this.ordenarPasajeroFlatButton.Icon = null;
+            this.ordenarPasajeroFlatButton.Location = new System.Drawing.Point(433, 9);
+            this.ordenarPasajeroFlatButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.ordenarPasajeroFlatButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.ordenarPasajeroFlatButton.Name = "ordenarPasajeroFlatButton";
+            this.ordenarPasajeroFlatButton.Primary = false;
+            this.ordenarPasajeroFlatButton.Size = new System.Drawing.Size(83, 36);
+            this.ordenarPasajeroFlatButton.TabIndex = 5;
+            this.ordenarPasajeroFlatButton.Text = "Ordenar";
+            this.ordenarPasajeroFlatButton.UseVisualStyleBackColor = true;
+            this.ordenarPasajeroFlatButton.Click += new System.EventHandler(this.ordenarPasajeroFlatButton_Click);
             // 
             // pasajeroMaterialListView
             // 
@@ -135,12 +154,12 @@
             // rutaColumnHeader
             // 
             this.rutaColumnHeader.Text = "Ruta";
-            this.rutaColumnHeader.Width = 70;
+            this.rutaColumnHeader.Width = 75;
             // 
             // asientoColumnHeader
             // 
             this.asientoColumnHeader.Text = "Asiento";
-            this.asientoColumnHeader.Width = 80;
+            this.asientoColumnHeader.Width = 75;
             // 
             // searchPasajeroLineTextField
             // 
@@ -554,6 +573,7 @@
         private MaterialSkin.Controls.MaterialRadioButton costoVueloRadioButton;
         private MaterialSkin.Controls.MaterialFlatButton sortVuelosMaterialFlatButton;
         private System.Windows.Forms.Panel rutaPanel;
+        private MaterialSkin.Controls.MaterialFlatButton ordenarPasajeroFlatButton;
     }
 }
 
