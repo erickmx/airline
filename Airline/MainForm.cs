@@ -63,6 +63,7 @@ namespace Airline
 
             // rutasTab config
             this.cityRoute = '\n';
+            this.eliminarCiudadRutaFlatButton.Enabled = false;
             this.startDrawRuta();
 
 
@@ -531,27 +532,29 @@ namespace Airline
          * rutasTab
          */
 
-
         private void startDrawRuta()
         {
+
+            chargeCitysRuta();
             double angulo;
             double radio;
             int div = graph.getNodesCount();
             int x;
             int y;
-            char nom;
+            string nom;
 
-            Pen pluma1 = new Pen(Color.Blue, 2);
-            Pen pluma2 = new Pen(Color.White, 13);
-            SolidBrush mensajes = new SolidBrush(Color.Red);
-            //graphPanel.CreateGraphics().DrawEllipse(pluma1, 20, 20, graphPanel.Width - 15, graphPanel.Height - 15);
+            Pen pluma1 = new Pen(Color.BlueViolet);
+            Pen pluma2 = new Pen(Color.Red);
+            SolidBrush mensajes = new SolidBrush(Color.White);
+
+            //this.rutaPanel.CreateGraphics().DrawEllipse(pluma1, 20, 20, rutaPanel.Height - 30, rutaPanel.Height - 30);
             radio = (rutaPanel.Height - 30) / 2;
             angulo = 2 * Math.PI / div;
+
             for (int i = 0; i < graph.getNodesCount(); i++)
             {
-
-                nom = graph.getNode(i).getCiudad().getName();
-                if (graph.getNode(i).getCiudad().getPos() < 0 /*&& this.opc == 0*/)
+                //nom = graph.getNode(i).getCiudad().getName().ToString();
+                if (graph.getNode(i).getCiudad().getPos() < 0)
                 {
                     x = Convert.ToInt32(Math.Cos(i * angulo) * radio + 20 + radio);
                     y = Convert.ToInt32(Math.Sin(i * angulo) * radio + 20 + radio);
@@ -563,13 +566,10 @@ namespace Airline
                     y = graph.getNode(i).getCiudad().getPosY();
                 }
 
-                rutaPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 15, 15);
-                rutaPanel.CreateGraphics().DrawString(Convert.ToString(nom), DefaultFont, mensajes, x - 9, y - 9);
+                rutaPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 20, 20);
+                //rutaPanel.CreateGraphics().DrawString(nom, DefaultFont, mensajes, x - 5, y - 5);
 
             }
-
-            AdjustableArrowCap bigArrow = new AdjustableArrowCap(4, 8);
-            pluma1.CustomEndCap = bigArrow;
 
             int originX = 0;
             int originY = 0;
@@ -578,37 +578,41 @@ namespace Airline
 
             int letterX = 0;
             int letterY = 0;
-            string letter = "";
+            string letter;
 
-            for (int j = 0; j < graph.getNodesCount(); j++)
+            Pen arista = new Pen(Color.BlueViolet, 1);
+            // DarkCyan
+            // DarkGoldenrod
+            SolidBrush letterPen = new SolidBrush(Color.White);
+            AdjustableArrowCap arrow = new AdjustableArrowCap(3, 5);
+            arista.CustomEndCap = arrow;
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
             {
-                for (int k = 0; k < graph.getNode(j).getAdyCount(); k++)
+                for (int j = 0; j < graph.getNode(i).getAdyCount(); j++)
                 {
+                    originX = graph.getNode(i).getCiudad().getPosX();
+                    originY = graph.getNode(i).getCiudad().getPosY();
+                    destinyX = graph.getNode(i).getAdyEl(j).getNodo().getCiudad().getPosX();
+                    destinyY = graph.getNode(i).getAdyEl(j).getNodo().getCiudad().getPosY();
 
-                    originX = this.calculateXRuta(graph.getNode(j).getCiudad().getPosX());
-                    originY = this.calculateYRuta(graph.getNode(j).getCiudad().getPosY());
-                    destinyX = this.calculateXRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX());
-                    destinyY = this.calculateYRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY());
+                    this.rutaPanel.CreateGraphics().DrawLine(arista, originX, originY, destinyX, destinyY);
 
-                    this.rutaPanel.CreateGraphics().DrawLine(pluma1,
-                        originX,
-                        originY,
-                        destinyX,
-                        destinyY);
-
-                    letterX = (
-                        calculateXRuta(graph.getNode(j).getCiudad().getPosX()) + 
-                        calculateXRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX())
-                        ) / 2;
-                    letterY = (
-                        calculateYRuta(graph.getNode(j).getCiudad().getPosY()) + 
-                        calculateYRuta(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY())
-                        ) / 2;
-                    letter = graph.getNode(j).getAdyEl(k).getPondCosto() + ", " + graph.getNode(j).getAdyEl(k).getPondTime();
-
-                    //graphPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - 9, letterY - 9);
-                    rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX, letterY);
+                    letterX = (originX + destinyX) / 2;
+                    letterY = (originY + destinyY) / 2;
+                    letter = graph.getNode(i).getAdyEl(j).getPondCosto() + ", " + graph.getNode(i).getAdyEl(j).getPondTime();
+                    rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, letterPen, letterX, letterY);
                 }
+            }
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
+            {
+                nom = graph.getNode(i).getCiudad().getName().ToString();
+                x = graph.getNode(i).getCiudad().getPosX();
+                y = graph.getNode(i).getCiudad().getPosY();
+                
+                rutaPanel.CreateGraphics().DrawString(nom, DefaultFont, mensajes, x - 5, y - 5);
+
             }
 
         }
@@ -662,6 +666,22 @@ namespace Airline
             return 0;
         }
 
+        private void chargeCitysRuta()
+        {
+            this.ciudadRutaMaterialListView.Items.Clear();
+
+            string[] arrayString = new string[1];
+            int limit = graph.getNodesCount();
+
+            for(int i = 0; i < limit; i++)
+            {
+                arrayString[0] = graph.getNode(i).getCiudad().getName().ToString();
+                ListViewItem item = new ListViewItem(arrayString);
+                this.ciudadRutaMaterialListView.Items.Add(item);
+            }
+
+        }
+
         // rutaPanel event
         private void rutaMaterialLabel_Paint(object sender, PaintEventArgs e)
         {
@@ -672,6 +692,22 @@ namespace Airline
         {
             startDrawRuta();
         }
+
+        private void ciudadRutaMaterialListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.cityRoute = ciudadRutaMaterialListView.FocusedItem.SubItems[0].Text[0];
+            this.eliminarCiudadRutaFlatButton.Enabled = true;
+        }
+
+        private void eliminarCiudadRutaFlatButton_Click(object sender, EventArgs e)
+        {
+            this.graph.removeVertex(cityRoute);
+            this.flyList.RemoveAll( fly => fly.getOrigen().Equals(cityRoute) || fly.getDestino().Equals(cityRoute) );
+            this.cityRoute = '\n';
+            this.eliminarCiudadRutaFlatButton.Enabled = false;
+            startDrawRuta();
+        }
+
 
 
         /*

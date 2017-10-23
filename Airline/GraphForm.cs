@@ -30,6 +30,15 @@ namespace Airline
 
             InitializeComponent();
 
+            MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.ColorScheme = new ColorScheme(
+                Primary.Blue300, // parte debajo de la barra 
+                Primary.Blue400, // barra de opciones
+                Primary.Blue400, // ??
+                Accent.Green100, // shades de adorno
+                TextShade.WHITE  // color letra
+                );
+
             posX = -1;
             posY = -1;
 
@@ -69,37 +78,22 @@ namespace Airline
             int div = graph.getNodesCount();
             int x;
             int y;
-            char nom;
+            string nom;
 
-            Pen pluma1 = new Pen(Color.Blue, 2);
-            Pen pluma2 = new Pen(Color.White, 13);
-            SolidBrush mensajes = new SolidBrush(Color.Red);
-            //graphPanel.CreateGraphics().DrawEllipse(pluma1, 20, 20, graphPanel.Width - 15, graphPanel.Height - 15);
+            Pen pluma1 = new Pen(Color.BlueViolet);
+            Pen pluma2 = new Pen(Color.Red);
+            SolidBrush mensajes = new SolidBrush(Color.White);
+            
             radio = (graphPanel.Height - 30) / 2;
             angulo = 2 * Math.PI / div;
+
             for (int i = 0; i < graph.getNodesCount(); i++)
-            {
+            {   
+                x = graph.getNode(i).getCiudad().getPosX();
+                y = graph.getNode(i).getCiudad().getPosY();
 
-                nom = graph.getNode(i).getCiudad().getName();
-                if (graph.getNode(i).getCiudad().getPos() < 0 && opc == 0)
-                {
-                    x = Convert.ToInt32(Math.Cos(i * angulo) * radio + 20 + radio);
-                    y = Convert.ToInt32(Math.Sin(i * angulo) * radio + 20 + radio);
-                    graph.getNode(i).getCiudad().setPos(x, y);
-                }
-                else
-                {
-                    x = graph.getNode(i).getCiudad().getPosX();
-                    y = graph.getNode(i).getCiudad().getPosY();
-                }
-
-                graphPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 15, 15);
-                graphPanel.CreateGraphics().DrawString(Convert.ToString(nom), DefaultFont, mensajes, x - 9, y - 9);
-
+                graphPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 20, 20);
             }
-
-            AdjustableArrowCap bigArrow = new AdjustableArrowCap(4, 8);
-            pluma1.CustomEndCap = bigArrow;
 
             int originX = 0;
             int originY = 0;
@@ -108,31 +102,40 @@ namespace Airline
 
             int letterX = 0;
             int letterY = 0;
-            string letter = "";
+            string letter;
 
-            for (int j = 0; j < graph.getNodesCount(); j++)
+            Pen arista = new Pen(Color.BlueViolet, 1);
+
+            SolidBrush letterPen = new SolidBrush(Color.White);
+            AdjustableArrowCap arrow = new AdjustableArrowCap(3, 5);
+            arista.CustomEndCap = arrow;
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
             {
-                for (int k = 0; k < graph.getNode(j).getAdyCount(); k++)
+                for (int j = 0; j < graph.getNode(i).getAdyCount(); j++)
                 {
+                    originX = graph.getNode(i).getCiudad().getPosX();
+                    originY = graph.getNode(i).getCiudad().getPosY();
+                    destinyX = graph.getNode(i).getAdyEl(j).getNodo().getCiudad().getPosX();
+                    destinyY = graph.getNode(i).getAdyEl(j).getNodo().getCiudad().getPosY();
 
-                    originX = this.calculateX(graph.getNode(j).getCiudad().getPosX());
-                    originY = this.calculateY(graph.getNode(j).getCiudad().getPosY());
-                    destinyX = this.calculateX(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX());
-                    destinyY = this.calculateY(graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY());
+                    this.graphPanel.CreateGraphics().DrawLine(arista, originX, originY, destinyX, destinyY);
 
-                    graphPanel.CreateGraphics().DrawLine(pluma1,
-                        originX,
-                        originY,
-                        destinyX,
-                        destinyY);
-
-                    letterX = (graph.getNode(j).getCiudad().getPosX() + graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosX()) / 2;
-                    letterY = (graph.getNode(j).getCiudad().getPosY() + graph.getNode(j).getAdyEl(k).getNodo().getCiudad().getPosY()) / 2;
-                    letter = graph.getNode(j).getAdyEl(k).getPondCosto() + ", " + graph.getNode(j).getAdyEl(k).getPondTime();
-
-                    //graphPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - 9, letterY - 9);
-                    graphPanel.CreateGraphics().DrawString(letter, DefaultFont, mensajes, letterX - letter.Length, letterY - 15);
+                    letterX = (originX + destinyX) / 2;
+                    letterY = (originY + destinyY) / 2;
+                    letter = graph.getNode(i).getAdyEl(j).getPondCosto() + ", " + graph.getNode(i).getAdyEl(j).getPondTime();
+                    graphPanel.CreateGraphics().DrawString(letter, DefaultFont, letterPen, letterX, letterY);
                 }
+            }
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
+            {
+                nom = graph.getNode(i).getCiudad().getName().ToString();
+                x = graph.getNode(i).getCiudad().getPosX();
+                y = graph.getNode(i).getCiudad().getPosY();
+
+                graphPanel.CreateGraphics().DrawString(nom, DefaultFont, mensajes, x - 5, y - 5);
+
             }
 
         }

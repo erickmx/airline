@@ -59,6 +59,9 @@
             this.rutaTabPage = new System.Windows.Forms.TabPage();
             this.rutaPanel = new System.Windows.Forms.Panel();
             this.mostrarRutaMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.ciudadRutaMaterialListView = new MaterialSkin.Controls.MaterialListView();
+            this.cityRutasColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.eliminarCiudadRutaFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.menuMaterialTabControl.SuspendLayout();
             this.pasajeroTabPage.SuspendLayout();
             this.vueloTabPage.SuspendLayout();
@@ -484,6 +487,8 @@
             // rutaTabPage
             // 
             this.rutaTabPage.BackColor = System.Drawing.Color.White;
+            this.rutaTabPage.Controls.Add(this.eliminarCiudadRutaFlatButton);
+            this.rutaTabPage.Controls.Add(this.ciudadRutaMaterialListView);
             this.rutaTabPage.Controls.Add(this.rutaPanel);
             this.rutaTabPage.Controls.Add(this.mostrarRutaMaterialFlatButton);
             this.rutaTabPage.Location = new System.Drawing.Point(4, 22);
@@ -500,7 +505,7 @@
             this.rutaPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rutaPanel.Location = new System.Drawing.Point(3, 3);
             this.rutaPanel.Name = "rutaPanel";
-            this.rutaPanel.Size = new System.Drawing.Size(524, 328);
+            this.rutaPanel.Size = new System.Drawing.Size(450, 328);
             this.rutaPanel.TabIndex = 2;
             this.rutaPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rutaMaterialLabel_Paint);
             // 
@@ -520,6 +525,48 @@
             this.mostrarRutaMaterialFlatButton.Text = "Mostrar";
             this.mostrarRutaMaterialFlatButton.UseVisualStyleBackColor = true;
             this.mostrarRutaMaterialFlatButton.Click += new System.EventHandler(this.mostrarRutaMaterialFlatButton_Click);
+            // 
+            // ciudadRutaMaterialListView
+            // 
+            this.ciudadRutaMaterialListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ciudadRutaMaterialListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cityRutasColumnHeader});
+            this.ciudadRutaMaterialListView.Depth = 0;
+            this.ciudadRutaMaterialListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
+            this.ciudadRutaMaterialListView.FullRowSelect = true;
+            this.ciudadRutaMaterialListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.ciudadRutaMaterialListView.Location = new System.Drawing.Point(519, 167);
+            this.ciudadRutaMaterialListView.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.ciudadRutaMaterialListView.MouseState = MaterialSkin.MouseState.OUT;
+            this.ciudadRutaMaterialListView.Name = "ciudadRutaMaterialListView";
+            this.ciudadRutaMaterialListView.OwnerDraw = true;
+            this.ciudadRutaMaterialListView.Size = new System.Drawing.Size(100, 159);
+            this.ciudadRutaMaterialListView.TabIndex = 3;
+            this.ciudadRutaMaterialListView.UseCompatibleStateImageBehavior = false;
+            this.ciudadRutaMaterialListView.View = System.Windows.Forms.View.Details;
+            this.ciudadRutaMaterialListView.SelectedIndexChanged += new System.EventHandler(this.ciudadRutaMaterialListView_SelectedIndexChanged);
+            // 
+            // cityRutasColumnHeader
+            // 
+            this.cityRutasColumnHeader.Text = "Ciudad";
+            this.cityRutasColumnHeader.Width = 83;
+            // 
+            // eliminarCiudadRutaFlatButton
+            // 
+            this.eliminarCiudadRutaFlatButton.AutoSize = true;
+            this.eliminarCiudadRutaFlatButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.eliminarCiudadRutaFlatButton.Depth = 0;
+            this.eliminarCiudadRutaFlatButton.Icon = null;
+            this.eliminarCiudadRutaFlatButton.Location = new System.Drawing.Point(534, 57);
+            this.eliminarCiudadRutaFlatButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.eliminarCiudadRutaFlatButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.eliminarCiudadRutaFlatButton.Name = "eliminarCiudadRutaFlatButton";
+            this.eliminarCiudadRutaFlatButton.Primary = false;
+            this.eliminarCiudadRutaFlatButton.Size = new System.Drawing.Size(83, 36);
+            this.eliminarCiudadRutaFlatButton.TabIndex = 4;
+            this.eliminarCiudadRutaFlatButton.Text = "Eliminar";
+            this.eliminarCiudadRutaFlatButton.UseVisualStyleBackColor = true;
+            this.eliminarCiudadRutaFlatButton.Click += new System.EventHandler(this.eliminarCiudadRutaFlatButton_Click);
             // 
             // MainForm
             // 
@@ -574,6 +621,9 @@
         private MaterialSkin.Controls.MaterialFlatButton sortVuelosMaterialFlatButton;
         private System.Windows.Forms.Panel rutaPanel;
         private MaterialSkin.Controls.MaterialFlatButton ordenarPasajeroFlatButton;
+        private MaterialSkin.Controls.MaterialFlatButton eliminarCiudadRutaFlatButton;
+        private MaterialSkin.Controls.MaterialListView ciudadRutaMaterialListView;
+        private System.Windows.Forms.ColumnHeader cityRutasColumnHeader;
     }
 }
 
