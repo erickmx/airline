@@ -534,7 +534,6 @@ namespace Airline
 
         private void startDrawRuta()
         {
-
             chargeCitysRuta();
             double angulo;
             double radio;
@@ -690,6 +689,7 @@ namespace Airline
 
         private void mostrarRutaMaterialFlatButton_Click(object sender, EventArgs e)
         {
+            this.Refresh();
             startDrawRuta();
         }
 
@@ -705,7 +705,9 @@ namespace Airline
             this.flyList.RemoveAll( fly => fly.getOrigen().Equals(cityRoute) || fly.getDestino().Equals(cityRoute) );
             this.cityRoute = '\n';
             this.eliminarCiudadRutaFlatButton.Enabled = false;
-            startDrawRuta();
+            graph.removeAlone();
+            //startDrawRuta();
+            this.Refresh();
         }
 
 

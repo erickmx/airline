@@ -116,6 +116,34 @@ namespace Airline
         }
 
         // eliminara los nodos que se encuentren aislados
+        public void removeAlone()
+        {
+            bool connected = false;
+            int count = 0;
+
+            foreach (Node n in listaNodos)
+            {
+                connected = n.getAdyCount() > 0;
+                if (!connected)
+                {
+                    count =
+                    listaNodos.Count(
+                        node => node.getAdyList().Exists(
+                            ady => ady.getNodo().getCiudad().getName().Equals(n.getCiudad().getName())
+                        )
+                    );
+
+                    if(count < 1)
+                    {
+                        removeVertex(n.getCiudad().getName());
+                        removeAlone();
+                        break;
+                    }
+                }
+            }
+
+        }
+
         public void removeAlone(char city)
         {
             int alone =
@@ -125,13 +153,15 @@ namespace Airline
                     )
                 );
 
-            bool noConnect = listaNodos.Find(node => node.getCiudad().Equals(city)).getAdyCount() == 0;
+            bool connect = listaNodos.Find(node => node.getCiudad().Equals(city)).getAdyCount() == 0;
 
-            if (alone == 0 && noConnect)
+
+            if (alone == 0 && connect)
             {
                 removeVertex(city);
             }
         }
+
 
         public Node getNode(int i)
         {
@@ -155,6 +185,159 @@ namespace Airline
                 city.getCiudad().setPos(x, y);
             }
         }
+
+        /////////////////////////////////
+        //         Start kruskal       //
+        /////////////////////////////////
+
+        private List<Edge> inicializarCandidatos(int opc)
+        {
+            List<Edge> candidatos = new List<Edge>();
+
+            foreach(Node n in this.listaNodos)
+            {
+                for(int i = 0; i < n.getAdyCount(); i++)
+                {
+                    Edge candidato = new Edge(n,n.getAdyEl(i).getNodo(),n.getAdyEl(i).getPondTime(), n.getAdyEl(i).getPondCosto());
+                    candidatos.Add(candidato);
+                }
+            }
+
+            candidatos.Sort(
+                (candidato1, candidato2) => opc == 1?
+                    candidato1.getPondTime().CompareTo(candidato2.getPondTime()) : candidato1.getPondCosto().CompareTo(candidato2.getPondCosto())
+            );
+
+            return candidatos;
+        }
+
+        private List<string> inicializaComponentesConexos()
+        {
+            List<string> cc = new List<string>();
+            listaNodos.ForEach( node => cc.Add(node.getCiudad().getName().ToString()) );
+            return cc;
+        }
+
+        private Edge seleccionaCandidatos(List<Edge> listaCandidatos)
+        {
+            //como esta ordenado de menor a mayor
+            Edge candidato = listaCandidatos[0];
+            listaCandidatos.RemoveAt(0);
+            return candidato;
+            /*
+            // sin ordenar seria
+            int indice;
+            int menor = 99999999;
+            for(int i = 0; i < listaCandidatos.Count; i++)
+            {
+                // ejemplo con el costo
+                if (listaCandidatos[i].getPondCosto() < menor)
+                {
+                    indice = i;
+                    menor = listaCandidatos[i].getPondCosto();
+                }
+            }
+            Edge candidatoBueno = listaCandidatos[indice];
+            return candidatoBueno;
+            */
+        }
+
+        private int buscaEnCC(List<string> componentesConexos, string search)
+        {
+            for(int i = 0; i < componentesConexos.Count; i++)
+            {
+                if (componentesConexos[i].Contains(search))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private void combinacc(List<string> componentesConexos, int elem1, int elem2)
+        {
+            componentesConexos[elem1] += componentesConexos[elem2];
+            componentesConexos.RemoveAt(elem2);
+        }
+
+        /*
+        private bool sameConnectedComponent(List<Edge> arm, Edge candidato)
+        {
+            bool origin = false;
+            bool destiny = false;
+
+            foreach (Edge element in arm)
+            {
+                if (element.getOrigin().getCiudad().getName().Equals(candidato.getOrigin()))
+                {
+                    origin = true;
+                }
+                else if (element.getOrigin().getCiudad().getName().Equals(candidato.getDestiny()))
+                {
+                    origin = true;
+                }
+                if (element.getDestiny().getCiudad().getName().Equals(candidato.getOrigin()))
+                {
+                    destiny = true;
+                }
+                else if (element.getDestiny().getCiudad().getName().Equals(candidato.getDestiny()))
+                {
+                    destiny = true;
+                }
+            }
+
+            return origin && destiny;
+        }
+        */
+
+        private bool sameConnectedComponent(List<string> componentesConexos, Edge candidato)
+        {
+            int origin = buscaEnCC(componentesConexos, candidato.getOrigin().getCiudad().getName().ToString());
+            int destiny = buscaEnCC(componentesConexos, candidato.getDestiny().getCiudad().getName().ToString());
+            return componentesConexos[origin].CompareTo(componentesConexos[destiny])==0 && origin == destiny;
+        }
+
+        public List<Edge> kruskal(int opc)
+        {
+            List<Edge> candidatos = inicializarCandidatos(opc);
+            List<string> componentesConexos = inicializaComponentesConexos();
+            List<Edge> arm = new List<Edge>();
+            int component1;
+            int component2;
+
+            while (componentesConexos.Count > 1)
+            {
+                Edge candidato = seleccionaCandidatos(candidatos);
+                if (!sameConnectedComponent(componentesConexos, candidato))
+                {
+                    arm.Add(candidato);
+                    component1 = buscaEnCC(componentesConexos,candidato.getOrigin().getCiudad().getName().ToString());
+                    component2 = buscaEnCC(componentesConexos, candidato.getDestiny().getCiudad().getName().ToString());
+                    combinacc(componentesConexos,component1,component2);
+                }
+            }
+
+            foreach(Edge edge in arm)
+            {
+                Console.WriteLine(edge.getOrigin().getCiudad().getName() + " -> " + edge.getDestiny().getCiudad().getName());
+            }
+
+            return arm;
+        }
+
+        /////////////////////////////////
+        //          end kruskal        //
+        /////////////////////////////////
+
+        /////////////////////////////////
+        //         Start Prim          //
+        /////////////////////////////////
+
+
+
+        /////////////////////////////////
+        //          end Prim           //
+        /////////////////////////////////
 
     }
 
@@ -323,6 +506,42 @@ namespace Airline
 
     }
 
+    // aristas para los recorrimientos
+    public class Edge
+    {
+        Node origin;
+        Node destiny;
+        int pondTime;
+        int pondCosto;
 
+        public Edge(Node origin, Node destiny, int pondTime, int pondCosto)
+        {
+            this.origin = origin;
+            this.destiny = destiny;
+            this.pondTime = pondTime;
+            this.pondCosto = pondCosto;
+        }
+
+        public Node getOrigin()
+        {
+            return this.origin;
+        }
+
+        public Node getDestiny()
+        {
+            return this.destiny;
+        }
+
+        public int getPondTime()
+        {
+            return this.pondTime;
+        }
+
+        public int getPondCosto()
+        {
+            return this.pondCosto;
+        }
+
+    }
 
 }

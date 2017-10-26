@@ -23,7 +23,7 @@ namespace Airline
             Graph graph = new Graph();
             graphFromDisk(ref graph, flyList);
             graph.imprime();
-
+            testKruskal();
             // program auoconfig
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -184,7 +184,51 @@ namespace Airline
             }
         }
 
+        static void testKruskal()
+        {
+            Graph grafiti = new Graph();
+            grafiti.addVertex('a');
+            grafiti.addVertex('b');
+            grafiti.addVertex('c');
+            grafiti.addVertex('d');
+            grafiti.addVertex('e');
+            /*
+            grafiti.addVertex('f');
 
+            grafiti.createAdy('a', 'b', 10, 10);
+            grafiti.createAdy('a', 'c', 20, 20);
+            grafiti.createAdy('a', 'd', 30, 30);
+
+            grafiti.createAdy('b', 'c', 10, 10);
+            grafiti.createAdy('b', 'f', 40, 40);
+
+            grafiti.createAdy('c', 'f', 5, 5);
+
+            grafiti.createAdy('d', 'e', 15, 15);
+            grafiti.createAdy('d', 'a', 80, 80);
+
+            grafiti.createAdy('e', 'd', 25, 25);
+            */
+
+            grafiti.createAdy('a', 'b', 7, 7);
+            grafiti.createAdy('a', 'c', 20, 20);
+            grafiti.createAdy('a', 'e', 5, 5);
+
+            grafiti.createAdy('b', 'c', 2, 2);
+            grafiti.createAdy('b', 'd', 6, 6);
+            grafiti.createAdy('b', 'e', 5, 5);
+
+            grafiti.createAdy('c', 'd', 5, 5);
+
+            grafiti.createAdy('d', 'e', 10, 10);
+
+            Console.WriteLine("Grafo de pruebas: ");
+            grafiti.imprime();
+
+            Console.WriteLine("Su kruskal: ");
+            grafiti.kruskal(1);
+
+        }
 
 
     }
