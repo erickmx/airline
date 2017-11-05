@@ -305,6 +305,11 @@ namespace Airline
             int component1;
             int component2;
 
+            foreach (Edge candi in candidatos)
+            {
+                Console.WriteLine(candi.getOrigin().getCiudad().getName() + "->" + candi.getDestiny().getCiudad().getName() + ": " + candi.getPondTime());
+            }
+
             while (componentesConexos.Count > 1)
             {
                 Edge candidato = seleccionaCandidatos(candidatos);

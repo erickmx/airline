@@ -216,7 +216,7 @@ namespace Airline
 
             grafiti.createAdy('b', 'c', 2, 2);
             grafiti.createAdy('b', 'd', 6, 6);
-            grafiti.createAdy('b', 'e', 5, 5);
+            grafiti.createAdy('b', 'e', 9, 9);
 
             grafiti.createAdy('c', 'd', 5, 5);
 
