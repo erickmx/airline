@@ -338,7 +338,56 @@ namespace Airline
         //         Start Prim          //
         /////////////////////////////////
 
+        /*
+         
+        private List<Edge> filtraCandidatos(string origen, List<Edge> candidatos)
+        {
+            return candidatos.FindAll( edge => edge.getOrigin().getCiudad().getName().ToString().CompareTo(origen) == 0 );
+        }
 
+        private Edge mejorCandidato(List<Edge> candidatos, int opc)
+        {
+            int pondBaja = 99999;
+            int indice = 0;
+
+            for(int i = 0; i < candidatos.Count; i++)
+            {
+                if(opc == 1)
+                {
+                    if(candidatos[i].getPondTime() < pondBaja)
+                    {
+                        indice = i;
+                        pondBaja = candidatos[i].getPondTime();
+                    }
+                }
+                else
+                {
+                    if (candidatos[i].getPondCosto() < pondBaja)
+                    {
+                        indice = i;
+                        pondBaja = candidatos[i].getPondCosto();
+                    }
+                }
+            }
+
+            return candidatos[indice];
+        }
+
+        public List<Edge> prim(int opc, string nodoAleatorio)
+        {
+            List<Edge> candidatos = inicializarCandidatos(opc);
+            List<String> conjuntoNodos = inicializaComponentesConexos();
+            List<Edge> arm = new List<Edge>();
+
+            while(conjuntoNodos.Count > 1)
+            {
+
+            }
+
+            return arm;
+        }
+        
+        */
 
         /////////////////////////////////
         //          end Prim           //

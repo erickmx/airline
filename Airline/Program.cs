@@ -186,6 +186,7 @@ namespace Airline
 
         static void testKruskal()
         {
+            /*
             Graph grafiti = new Graph();
             grafiti.addVertex('a');
             grafiti.addVertex('b');
@@ -209,7 +210,7 @@ namespace Airline
 
             grafiti.createAdy('e', 'd', 25, 25);
             */
-
+            /*
             grafiti.createAdy('a', 'b', 7, 7);
             grafiti.createAdy('a', 'c', 20, 20);
             grafiti.createAdy('a', 'e', 5, 5);
@@ -221,6 +222,35 @@ namespace Airline
             grafiti.createAdy('c', 'd', 5, 5);
 
             grafiti.createAdy('d', 'e', 10, 10);
+
+            Console.WriteLine("Grafo de pruebas: ");
+            grafiti.imprime();
+
+            Console.WriteLine("Su kruskal: ");
+            grafiti.kruskal(1);
+            */
+            Graph grafiti = new Graph();
+            grafiti.addVertex('a');
+            grafiti.addVertex('b');
+            grafiti.addVertex('c');
+            grafiti.addVertex('d');
+            grafiti.addVertex('e');
+            grafiti.addVertex('f');
+            grafiti.addVertex('g');
+            grafiti.addVertex('h');
+            grafiti.addVertex('i');
+
+            grafiti.createAdy('A', 'B', 1, 1);
+            grafiti.createAdy('F', 'E', 5, 5);
+            grafiti.createAdy('B', 'D', 18, 18);
+            grafiti.createAdy('A', 'C', 25, 25);
+            grafiti.createAdy('C', 'B', 50, 50);
+            grafiti.createAdy('C', 'E', 50, 50);
+            grafiti.createAdy('B', 'E', 50, 50);
+            grafiti.createAdy('F', 'D', 50, 50);
+            grafiti.createAdy('H', 'I', 62, 62);
+            grafiti.createAdy('I', 'J', 68, 68);
+            grafiti.createAdy('F', 'G', 70, 70);
 
             Console.WriteLine("Grafo de pruebas: ");
             grafiti.imprime();
