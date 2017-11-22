@@ -310,11 +310,13 @@ namespace Airline
                 Console.WriteLine(candi.getOrigin().getCiudad().getName() + "->" + candi.getDestiny().getCiudad().getName() + ": " + candi.getPondTime());
             }
 
-            while (componentesConexos.Count > 1)
+            while (componentesConexos.Count > 1 && candidatos.Count > 1)
             {
                 Edge candidato = seleccionaCandidatos(candidatos);
                 if (!sameConnectedComponent(componentesConexos, candidato))
                 {
+                    // componentesConexos.ForEach(c => Console.WriteLine(c));
+                    // Console.WriteLine("--------------------------------------------------------");
                     arm.Add(candidato);
                     component1 = buscaEnCC(componentesConexos,candidato.getOrigin().getCiudad().getName().ToString());
                     component2 = buscaEnCC(componentesConexos, candidato.getDestiny().getCiudad().getName().ToString());

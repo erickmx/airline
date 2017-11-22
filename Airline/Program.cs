@@ -230,27 +230,29 @@ namespace Airline
             grafiti.kruskal(1);
             */
             Graph grafiti = new Graph();
-            grafiti.addVertex('a');
-            grafiti.addVertex('b');
-            grafiti.addVertex('c');
-            grafiti.addVertex('d');
-            grafiti.addVertex('e');
-            grafiti.addVertex('f');
-            grafiti.addVertex('g');
-            grafiti.addVertex('h');
-            grafiti.addVertex('i');
+            grafiti.addVertex('A');
+            grafiti.addVertex('B');
+            grafiti.addVertex('C');
+            grafiti.addVertex('D');
+            grafiti.addVertex('E');
+            grafiti.addVertex('F');
+            grafiti.addVertex('G');
+            grafiti.addVertex('H');
+            grafiti.addVertex('I');
+            grafiti.addVertex('J');
 
             grafiti.createAdy('A', 'B', 1, 1);
             grafiti.createAdy('F', 'E', 5, 5);
             grafiti.createAdy('B', 'D', 18, 18);
             grafiti.createAdy('A', 'C', 25, 25);
-            grafiti.createAdy('C', 'B', 50, 50);
+            grafiti.createAdy('C', 'B', 30, 30);
             grafiti.createAdy('C', 'E', 50, 50);
-            grafiti.createAdy('B', 'E', 50, 50);
-            grafiti.createAdy('F', 'D', 50, 50);
+            grafiti.createAdy('B', 'E', 52, 52);
+            grafiti.createAdy('F', 'D', 60, 60);
             grafiti.createAdy('H', 'I', 62, 62);
             grafiti.createAdy('I', 'J', 68, 68);
             grafiti.createAdy('F', 'G', 70, 70);
+            grafiti.createAdy('H', 'J', 90, 90);
 
             Console.WriteLine("Grafo de pruebas: ");
             grafiti.imprime();
