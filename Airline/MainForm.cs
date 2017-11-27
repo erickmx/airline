@@ -33,6 +33,7 @@ namespace Airline
 
         // rutasTab use
         char cityRoute;
+        int opcRecorrido;
 
         public MainForm(ref GenericList<Vuelo> flyList, Graph graph)
         {
@@ -63,6 +64,7 @@ namespace Airline
 
             // rutasTab config
             this.cityRoute = '\n';
+            this.opcRecorrido = -1;
             this.eliminarCiudadRutaFlatButton.Enabled = false;
             this.startDrawRuta();
 
@@ -684,7 +686,7 @@ namespace Airline
         // rutaPanel event
         private void rutaMaterialLabel_Paint(object sender, PaintEventArgs e)
         {
-            startDrawRuta();
+            //startDrawRuta();
         }
 
         private void mostrarRutaMaterialFlatButton_Click(object sender, EventArgs e)
@@ -708,6 +710,110 @@ namespace Airline
             graph.removeAlone();
             //startDrawRuta();
             this.Refresh();
+        }
+
+        private void costoRutasMaterialRadioButton_Click(object sender, EventArgs e)
+        {
+            this.opcRecorrido = 0;
+        }
+
+        private void tiempoRutasMaterialRadioButton_Click(object sender, EventArgs e)
+        {
+            this.opcRecorrido = 1;
+        }
+
+        private void PrimRutaFlatButton_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void kruskalutaFlatButton_Click(object sender, EventArgs e)
+        {
+            int total = 0;
+            List<Edge> le = this.graph.kruskal(this.opcRecorrido);
+            startDrawEdgesRuta(le);
+            total = le.Sum(edge => opcRecorrido == 0? edge.getPondCosto() : edge.getPondTime());
+            this.totalRutaMaterialLabel.Text = "Total:\n" + total.ToString();
+            this.opcRecorrido = -1;
+        }
+
+        private void startDrawEdgesRuta(List<Edge> listEdge)
+        {
+            this.Refresh();
+            chargeCitysRuta();
+            double angulo;
+            double radio;
+            int div = graph.getNodesCount();
+            int x;
+            int y;
+            string nom;
+
+            Pen pluma1 = new Pen(Color.White);
+            Pen pluma2 = new Pen(Color.Red);
+            SolidBrush mensajes = new SolidBrush(Color.White);
+            
+            radio = (rutaPanel.Height - 30) / 2;
+            angulo = 2 * Math.PI / div;
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
+            {
+                if (graph.getNode(i).getCiudad().getPos() < 0)
+                {
+                    x = Convert.ToInt32(Math.Cos(i * angulo) * radio + 20 + radio);
+                    y = Convert.ToInt32(Math.Sin(i * angulo) * radio + 20 + radio);
+                    graph.getNode(i).getCiudad().setPos(x, y);
+                }
+                else
+                {
+                    x = graph.getNode(i).getCiudad().getPosX();
+                    y = graph.getNode(i).getCiudad().getPosY();
+                }
+
+                rutaPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 20, 20);
+            }
+
+            int originX = 0;
+            int originY = 0;
+            int destinyX = 0;
+            int destinyY = 0;
+
+            int letterX = 0;
+            int letterY = 0;
+            string letter;
+
+            Pen arista = new Pen(Color.BlueViolet, 1);
+            SolidBrush letterPen = new SolidBrush(Color.White);
+            AdjustableArrowCap arrow = new AdjustableArrowCap(3, 5);
+            arista.CustomEndCap = arrow;
+
+            for (int i = 0; i < listEdge.Count; i++)
+            {
+                originX = listEdge[i].getOrigin().getCiudad().getPosX();
+                originY = listEdge[i].getOrigin().getCiudad().getPosY();
+                destinyX = listEdge[i].getDestiny().getCiudad().getPosX();
+                destinyY = listEdge[i].getDestiny().getCiudad().getPosY();
+
+                this.rutaPanel.CreateGraphics().DrawLine(arista, originX, originY, destinyX, destinyY);
+
+                letterX = (originX + destinyX) / 2;
+                letterY = (originY + destinyY) / 2;
+
+                letter = opcRecorrido == 0? listEdge[i].getPondCosto().ToString() : listEdge[i].getPondTime().ToString();
+
+                rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, letterPen, letterX, letterY);
+
+            }
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
+            {
+                nom = graph.getNode(i).getCiudad().getName().ToString();
+                x = graph.getNode(i).getCiudad().getPosX();
+                y = graph.getNode(i).getCiudad().getPosY();
+
+                rutaPanel.CreateGraphics().DrawString(nom, DefaultFont, mensajes, x - 5, y - 5);
+
+            }
+
         }
 
 
