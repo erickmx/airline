@@ -260,36 +260,6 @@ namespace Airline
             componentesConexos.RemoveAt(elem2);
         }
 
-        /*
-        private bool sameConnectedComponent(List<Edge> arm, Edge candidato)
-        {
-            bool origin = false;
-            bool destiny = false;
-
-            foreach (Edge element in arm)
-            {
-                if (element.getOrigin().getCiudad().getName().Equals(candidato.getOrigin()))
-                {
-                    origin = true;
-                }
-                else if (element.getOrigin().getCiudad().getName().Equals(candidato.getDestiny()))
-                {
-                    origin = true;
-                }
-                if (element.getDestiny().getCiudad().getName().Equals(candidato.getOrigin()))
-                {
-                    destiny = true;
-                }
-                else if (element.getDestiny().getCiudad().getName().Equals(candidato.getDestiny()))
-                {
-                    destiny = true;
-                }
-            }
-
-            return origin && destiny;
-        }
-        */
-
         private bool sameConnectedComponent(List<string> componentesConexos, Edge candidato)
         {
             int origin = buscaEnCC(componentesConexos, candidato.getOrigin().getCiudad().getName().ToString());
@@ -355,6 +325,13 @@ namespace Airline
                     return candidato;
                 }
             }
+            foreach(var candidato in candidatos)
+            {
+                if (!perteneceAS(s, candidato.getOrigin()) && !perteneceAS(s, candidato.getDestiny()))
+                {
+                    return candidato;
+                }
+            }
             return null;
         }
 
@@ -374,12 +351,12 @@ namespace Airline
             while(S.Length < candidatos.Count)
             {
                 var a = seleccionaFactible(candidatos, S);
-
+                
                 if (a == null)
                 {
                     return arm;
                 }
-
+                
                 arm.Add(a);
 
                 if (perteneceAS(S, a.getOrigin()))
