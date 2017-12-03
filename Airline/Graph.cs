@@ -133,7 +133,7 @@ namespace Airline
                         )
                     );
 
-                    if(count < 1)
+                    if (count < 1)
                     {
                         removeVertex(n.getCiudad().getName());
                         removeAlone();
@@ -194,17 +194,17 @@ namespace Airline
         {
             List<Edge> candidatos = new List<Edge>();
 
-            foreach(Node n in this.listaNodos)
+            foreach (Node n in this.listaNodos)
             {
-                for(int i = 0; i < n.getAdyCount(); i++)
+                for (int i = 0; i < n.getAdyCount(); i++)
                 {
-                    Edge candidato = new Edge(n,n.getAdyEl(i).getNodo(),n.getAdyEl(i).getPondTime(), n.getAdyEl(i).getPondCosto());
+                    Edge candidato = new Edge(n, n.getAdyEl(i).getNodo(), n.getAdyEl(i).getPondTime(), n.getAdyEl(i).getPondCosto());
                     candidatos.Add(candidato);
                 }
             }
 
             candidatos.Sort(
-                (candidato1, candidato2) => opc == 1?
+                (candidato1, candidato2) => opc == 1 ?
                     candidato1.getPondTime().CompareTo(candidato2.getPondTime()) : candidato1.getPondCosto().CompareTo(candidato2.getPondCosto())
             );
 
@@ -214,7 +214,7 @@ namespace Airline
         private List<string> inicializaComponentesConexos()
         {
             List<string> cc = new List<string>();
-            listaNodos.ForEach( node => cc.Add(node.getCiudad().getName().ToString()) );
+            listaNodos.ForEach(node => cc.Add(node.getCiudad().getName().ToString()));
             return cc;
         }
 
@@ -244,7 +244,7 @@ namespace Airline
 
         private int buscaEnCC(List<string> componentesConexos, string search)
         {
-            for(int i = 0; i < componentesConexos.Count; i++)
+            for (int i = 0; i < componentesConexos.Count; i++)
             {
                 if (componentesConexos[i].Contains(search))
                 {
@@ -294,7 +294,7 @@ namespace Airline
         {
             int origin = buscaEnCC(componentesConexos, candidato.getOrigin().getCiudad().getName().ToString());
             int destiny = buscaEnCC(componentesConexos, candidato.getDestiny().getCiudad().getName().ToString());
-            return componentesConexos[origin].CompareTo(componentesConexos[destiny])==0 && origin == destiny;
+            return componentesConexos[origin].CompareTo(componentesConexos[destiny]) == 0 && origin == destiny;
         }
 
         public List<Edge> kruskal(int opc)
@@ -318,13 +318,13 @@ namespace Airline
                     // componentesConexos.ForEach(c => Console.WriteLine(c));
                     // Console.WriteLine("--------------------------------------------------------");
                     arm.Add(candidato);
-                    component1 = buscaEnCC(componentesConexos,candidato.getOrigin().getCiudad().getName().ToString());
+                    component1 = buscaEnCC(componentesConexos, candidato.getOrigin().getCiudad().getName().ToString());
                     component2 = buscaEnCC(componentesConexos, candidato.getDestiny().getCiudad().getName().ToString());
-                    combinacc(componentesConexos,component1,component2);
+                    combinacc(componentesConexos, component1, component2);
                 }
             }
 
-            foreach(Edge edge in arm)
+            foreach (Edge edge in arm)
             {
                 Console.WriteLine(edge.getOrigin().getCiudad().getName() + " -> " + edge.getDestiny().getCiudad().getName());
             }
@@ -340,56 +340,63 @@ namespace Airline
         //         Start Prim          //
         /////////////////////////////////
 
-        /*
-         
-        private List<Edge> filtraCandidatos(string origen, List<Edge> candidatos)
+        // inicializar candidatos listo
+
+        private Edge seleccionaFactible(List<Edge> candidatos, string s)
         {
-            return candidatos.FindAll( edge => edge.getOrigin().getCiudad().getName().ToString().CompareTo(origen) == 0 );
+            foreach(var candidato in candidatos)
+            {
+                if(perteneceAS(s, candidato.getOrigin()) && !perteneceAS(s, candidato.getDestiny()))
+                {
+                    return candidato;
+                }
+                else if (perteneceAS(s, candidato.getDestiny()) && !perteneceAS(s, candidato.getOrigin()))
+                {
+                    return candidato;
+                }
+            }
+            return null;
         }
 
-        private Edge mejorCandidato(List<Edge> candidatos, int opc)
+        private bool perteneceAS(string s, Node v)
         {
-            int pondBaja = 99999;
-            int indice = 0;
+            return s.Contains(v.getCiudad().getName().ToString());
+        }
 
-            for(int i = 0; i < candidatos.Count; i++)
+        public List<Edge> prim(int opc, char origen)
+        {
+            //incializaCandidatos
+            var candidatos = inicializarCandidatos(opc);
+            // inicializa(s, nodoaleatorio)
+            var S = origen.ToString();
+            var arm = new List<Edge>();
+
+            while(S.Length < candidatos.Count)
             {
-                if(opc == 1)
+                var a = seleccionaFactible(candidatos, S);
+
+                if (a == null)
                 {
-                    if(candidatos[i].getPondTime() < pondBaja)
-                    {
-                        indice = i;
-                        pondBaja = candidatos[i].getPondTime();
-                    }
+                    return arm;
+                }
+
+                arm.Add(a);
+
+                if (perteneceAS(S, a.getOrigin()))
+                {
+                    // v2 u s
+                    S += a.getDestiny().getCiudad().getName().ToString();
                 }
                 else
                 {
-                    if (candidatos[i].getPondCosto() < pondBaja)
-                    {
-                        indice = i;
-                        pondBaja = candidatos[i].getPondCosto();
-                    }
+                    // v1 u s
+                    S += a.getOrigin().getCiudad().getName().ToString();
                 }
             }
 
-            return candidatos[indice];
-        }
-
-        public List<Edge> prim(int opc, string nodoAleatorio)
-        {
-            List<Edge> candidatos = inicializarCandidatos(opc);
-            List<String> conjuntoNodos = inicializaComponentesConexos();
-            List<Edge> arm = new List<Edge>();
-
-            while(conjuntoNodos.Count > 1)
-            {
-
-            }
-
             return arm;
+
         }
-        
-        */
 
         /////////////////////////////////
         //          end Prim           //
@@ -399,7 +406,58 @@ namespace Airline
         //        Start Dijkstra       //
         /////////////////////////////////
 
+        private List<DijkstraElement> inicialzaVectorDijkstra()
+        {
+            return (
+                from node in this.listaNodos
+                select new DijkstraElement(node, 9999999, false)
+            ).ToList();
+        }
 
+        private DijkstraElement buscarElementoDijkstra(List<DijkstraElement> VD, Ady a)
+        {
+            //DE = DijkstraElement
+            return VD.Find(DE => DE.getNode().getCiudad().getName().Equals(a.getNodo().getCiudad()));
+        }
+
+        // falta g, pero g es el grafo en si
+        private void actualizarPesos(ref List<DijkstraElement> VD, char n, int p, int opc)
+        {
+            var n_g = listaNodos.Find( node => node.getCiudad().getName().Equals(n) );
+            var pesoA = 0;
+            foreach(Ady a in n_g.getAdyList())
+            {
+                var ED = buscarElementoDijkstra(VD, a);
+                pesoA = opc == 0 ? a.getPondCosto() : a.getPondTime();
+                if (p + pesoA < ED.getWeigth())
+                {
+                    ED.setWeigth(p + pesoA);
+                }
+            }
+        }
+
+        private DijkstraElement sigDefinitivo(List<DijkstraElement> VD)
+        {
+            return (
+                from DE in VD
+                where !DE.getIsDefinitive()
+                orderby DE.getWeigth() ascending
+                select DE
+            ).First();
+        }
+
+        public List<DijkstraElement> dijkstra(int opc, char origin, char destiny)
+        {
+            //vector dijkstra
+            var VD = inicialzaVectorDijkstra();
+            // nodo inicial
+            var n = listaNodos.Find( nodo => nodo.getCiudad().getName().Equals(origin));
+            // peso
+            var p = 0;
+            actualizarPesos(ref VD, n.getCiudad().getName(), p, opc);
+            var definitivo = sigDefinitivo(VD);
+            return VD;
+        }
 
         /////////////////////////////////
         //        end Dijkstra         //
@@ -609,5 +667,76 @@ namespace Airline
         }
 
     }
+
+    public class DijkstraElement
+    {
+        int weigth;
+        Node node;
+        bool isDefinitive;
+        Node coming;
+
+        public DijkstraElement()
+        {
+            this.weigth = 0;
+            this.node = null;
+            this.isDefinitive = false;
+            this.coming = null;
+        }
+
+        public DijkstraElement(Node node, Node coming, int weigth, bool isDefinitive) : this()
+        {
+            this.node = node;
+            this.coming = coming;
+            this.weigth = weigth;
+            this.isDefinitive = isDefinitive;
+        }
+
+        public DijkstraElement(Node node, int weigth, bool isDefinitive) : this(node, null, weigth, isDefinitive)
+        {
+
+        }
+
+        public int getWeigth()
+        {
+            return this.weigth;
+        }
+
+        public Node getNode()
+        {
+            return this.node;
+        }
+
+        public bool getIsDefinitive()
+        {
+            return this.isDefinitive;
+        }
+
+        public Node getComming()
+        {
+            return this.coming;
+        }
+
+        public void setWeigth(int weigth)
+        {
+            this.weigth = weigth;
+        }
+
+        public void setNode(Node node)
+        {
+            this.node = node;
+        }
+
+        public void setIsDefinitive(bool isDefinitive)
+        {
+            this.isDefinitive = isDefinitive;
+        }
+
+        public void setComing(Node coming)
+        {
+            this.coming = coming;
+        }
+
+    }
+
 
 }

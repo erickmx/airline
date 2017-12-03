@@ -724,7 +724,12 @@ namespace Airline
 
         private void PrimRutaFlatButton_Click(object sender, EventArgs e)
         {
-            
+            int total = 0;
+            List<Edge> le = this.graph.prim(this.opcRecorrido, this.cityRoute);
+            startDrawEdgesRuta(le);
+            total = le.Sum(edge => opcRecorrido == 0 ? edge.getPondCosto() : edge.getPondTime());
+            this.totalRutaMaterialLabel.Text = "Total:\n" + total.ToString();
+            this.opcRecorrido = -1;
         }
 
         private void kruskalutaFlatButton_Click(object sender, EventArgs e)

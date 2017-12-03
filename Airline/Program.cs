@@ -21,9 +21,9 @@ namespace Airline
             readFromDisk(ref flyList);
 
             Graph graph = new Graph();
-            graphFromDisk(ref graph, flyList);
-            graph.imprime();
-            testKruskal();
+            //graphFromDisk(ref graph, flyList);
+            //graph.imprime();
+            graph = testKruskal();
             // program auoconfig
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -184,7 +184,7 @@ namespace Airline
             }
         }
 
-        static void testKruskal()
+        static Graph testKruskal()
         {
             /*
             Graph grafiti = new Graph();
@@ -259,6 +259,16 @@ namespace Airline
 
             Console.WriteLine("Su kruskal: ");
             grafiti.kruskal(1);
+
+            Console.WriteLine("Su prim: ");
+            var prim = grafiti.prim(1, 'F');
+
+            foreach(var p in prim)
+            {
+                Console.WriteLine(p.getOrigin().getCiudad().getName() + "->" + p.getDestiny().getCiudad().getName() + ": " + p.getPondCosto());
+            }
+
+            return grafiti;
 
         }
 
