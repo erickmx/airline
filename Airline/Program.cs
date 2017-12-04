@@ -21,10 +21,11 @@ namespace Airline
             readFromDisk(ref flyList);
 
             Graph graph = new Graph();
-            //graphFromDisk(ref graph, flyList);
+            graphFromDisk(ref graph, flyList);
             //graph.imprime();
             //graph = testKruskal();
-            graph = testDijkstra();
+            //graph = testDijkstra();
+
             // program auoconfig
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
