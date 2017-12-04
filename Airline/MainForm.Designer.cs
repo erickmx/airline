@@ -57,6 +57,9 @@
             this.comprarVueloMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.deleteVueloMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.rutaTabPage = new System.Windows.Forms.TabPage();
+            this.kruskalutaFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.PrimRutaFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.totalRutaMaterialLabel = new MaterialSkin.Controls.MaterialLabel();
             this.tiempoRutasMaterialRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
             this.costoRutasMaterialRadioButton = new MaterialSkin.Controls.MaterialRadioButton();
             this.eliminarCiudadRutaFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
@@ -64,9 +67,9 @@
             this.cityRutasColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.rutaPanel = new System.Windows.Forms.Panel();
             this.mostrarRutaMaterialFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.totalRutaMaterialLabel = new MaterialSkin.Controls.MaterialLabel();
-            this.PrimRutaFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
-            this.kruskalutaFlatButton = new MaterialSkin.Controls.MaterialFlatButton();
+            this.OrigenRutaMaterialListView = new MaterialSkin.Controls.MaterialListView();
+            this.origenColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.dijkstraMaterialButton = new MaterialSkin.Controls.MaterialFlatButton();
             this.menuMaterialTabControl.SuspendLayout();
             this.pasajeroTabPage.SuspendLayout();
             this.vueloTabPage.SuspendLayout();
@@ -492,6 +495,8 @@
             // rutaTabPage
             // 
             this.rutaTabPage.BackColor = System.Drawing.Color.White;
+            this.rutaTabPage.Controls.Add(this.dijkstraMaterialButton);
+            this.rutaTabPage.Controls.Add(this.OrigenRutaMaterialListView);
             this.rutaTabPage.Controls.Add(this.kruskalutaFlatButton);
             this.rutaTabPage.Controls.Add(this.PrimRutaFlatButton);
             this.rutaTabPage.Controls.Add(this.totalRutaMaterialLabel);
@@ -509,6 +514,53 @@
             this.rutaTabPage.TabIndex = 2;
             this.rutaTabPage.Text = "Rutas";
             this.rutaTabPage.Enter += new System.EventHandler(this.rutaTabPage_Enter);
+            // 
+            // kruskalutaFlatButton
+            // 
+            this.kruskalutaFlatButton.AutoSize = true;
+            this.kruskalutaFlatButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.kruskalutaFlatButton.Depth = 0;
+            this.kruskalutaFlatButton.Icon = null;
+            this.kruskalutaFlatButton.Location = new System.Drawing.Point(460, 57);
+            this.kruskalutaFlatButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.kruskalutaFlatButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.kruskalutaFlatButton.Name = "kruskalutaFlatButton";
+            this.kruskalutaFlatButton.Primary = false;
+            this.kruskalutaFlatButton.Size = new System.Drawing.Size(81, 36);
+            this.kruskalutaFlatButton.TabIndex = 9;
+            this.kruskalutaFlatButton.Text = "Kruskal";
+            this.kruskalutaFlatButton.UseVisualStyleBackColor = true;
+            this.kruskalutaFlatButton.Click += new System.EventHandler(this.kruskalutaFlatButton_Click);
+            // 
+            // PrimRutaFlatButton
+            // 
+            this.PrimRutaFlatButton.AutoSize = true;
+            this.PrimRutaFlatButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PrimRutaFlatButton.Depth = 0;
+            this.PrimRutaFlatButton.Icon = null;
+            this.PrimRutaFlatButton.Location = new System.Drawing.Point(460, 9);
+            this.PrimRutaFlatButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.PrimRutaFlatButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.PrimRutaFlatButton.Name = "PrimRutaFlatButton";
+            this.PrimRutaFlatButton.Primary = false;
+            this.PrimRutaFlatButton.Size = new System.Drawing.Size(54, 36);
+            this.PrimRutaFlatButton.TabIndex = 8;
+            this.PrimRutaFlatButton.Text = "Prim";
+            this.PrimRutaFlatButton.UseVisualStyleBackColor = true;
+            this.PrimRutaFlatButton.Click += new System.EventHandler(this.PrimRutaFlatButton_Click);
+            // 
+            // totalRutaMaterialLabel
+            // 
+            this.totalRutaMaterialLabel.AutoSize = true;
+            this.totalRutaMaterialLabel.Depth = 0;
+            this.totalRutaMaterialLabel.Font = new System.Drawing.Font("Roboto", 11F);
+            this.totalRutaMaterialLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.totalRutaMaterialLabel.Location = new System.Drawing.Point(456, 129);
+            this.totalRutaMaterialLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.totalRutaMaterialLabel.Name = "totalRutaMaterialLabel";
+            this.totalRutaMaterialLabel.Size = new System.Drawing.Size(48, 19);
+            this.totalRutaMaterialLabel.TabIndex = 7;
+            this.totalRutaMaterialLabel.Text = "Total:";
             // 
             // tiempoRutasMaterialRadioButton
             // 
@@ -585,7 +637,7 @@
             // 
             // cityRutasColumnHeader
             // 
-            this.cityRutasColumnHeader.Text = "Ciudad";
+            this.cityRutasColumnHeader.Text = "Des";
             this.cityRutasColumnHeader.Width = 83;
             // 
             // rutaPanel
@@ -593,7 +645,7 @@
             this.rutaPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rutaPanel.Location = new System.Drawing.Point(3, 3);
             this.rutaPanel.Name = "rutaPanel";
-            this.rutaPanel.Size = new System.Drawing.Size(450, 328);
+            this.rutaPanel.Size = new System.Drawing.Size(403, 328);
             this.rutaPanel.TabIndex = 2;
             this.rutaPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.rutaMaterialLabel_Paint);
             // 
@@ -614,52 +666,47 @@
             this.mostrarRutaMaterialFlatButton.UseVisualStyleBackColor = true;
             this.mostrarRutaMaterialFlatButton.Click += new System.EventHandler(this.mostrarRutaMaterialFlatButton_Click);
             // 
-            // totalRutaMaterialLabel
+            // OrigenRutaMaterialListView
             // 
-            this.totalRutaMaterialLabel.AutoSize = true;
-            this.totalRutaMaterialLabel.Depth = 0;
-            this.totalRutaMaterialLabel.Font = new System.Drawing.Font("Roboto", 11F);
-            this.totalRutaMaterialLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.totalRutaMaterialLabel.Location = new System.Drawing.Point(459, 99);
-            this.totalRutaMaterialLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.totalRutaMaterialLabel.Name = "totalRutaMaterialLabel";
-            this.totalRutaMaterialLabel.Size = new System.Drawing.Size(48, 19);
-            this.totalRutaMaterialLabel.TabIndex = 7;
-            this.totalRutaMaterialLabel.Text = "Total:";
+            this.OrigenRutaMaterialListView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.OrigenRutaMaterialListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.origenColumnHeader});
+            this.OrigenRutaMaterialListView.Depth = 0;
+            this.OrigenRutaMaterialListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F);
+            this.OrigenRutaMaterialListView.FullRowSelect = true;
+            this.OrigenRutaMaterialListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.OrigenRutaMaterialListView.Location = new System.Drawing.Point(414, 167);
+            this.OrigenRutaMaterialListView.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.OrigenRutaMaterialListView.MouseState = MaterialSkin.MouseState.OUT;
+            this.OrigenRutaMaterialListView.Name = "OrigenRutaMaterialListView";
+            this.OrigenRutaMaterialListView.OwnerDraw = true;
+            this.OrigenRutaMaterialListView.Size = new System.Drawing.Size(100, 159);
+            this.OrigenRutaMaterialListView.TabIndex = 10;
+            this.OrigenRutaMaterialListView.UseCompatibleStateImageBehavior = false;
+            this.OrigenRutaMaterialListView.View = System.Windows.Forms.View.Details;
+            this.OrigenRutaMaterialListView.SelectedIndexChanged += new System.EventHandler(this.OrigenRutaMaterialListView_SelectedIndexChanged);
             // 
-            // PrimRutaFlatButton
+            // origenColumnHeader
             // 
-            this.PrimRutaFlatButton.AutoSize = true;
-            this.PrimRutaFlatButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.PrimRutaFlatButton.Depth = 0;
-            this.PrimRutaFlatButton.Icon = null;
-            this.PrimRutaFlatButton.Location = new System.Drawing.Point(460, 9);
-            this.PrimRutaFlatButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.PrimRutaFlatButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.PrimRutaFlatButton.Name = "PrimRutaFlatButton";
-            this.PrimRutaFlatButton.Primary = false;
-            this.PrimRutaFlatButton.Size = new System.Drawing.Size(54, 36);
-            this.PrimRutaFlatButton.TabIndex = 8;
-            this.PrimRutaFlatButton.Text = "Prim";
-            this.PrimRutaFlatButton.UseVisualStyleBackColor = true;
-            this.PrimRutaFlatButton.Click += new System.EventHandler(this.PrimRutaFlatButton_Click);
+            this.origenColumnHeader.Text = "Ori";
+            this.origenColumnHeader.Width = 83;
             // 
-            // kruskalutaFlatButton
+            // dijkstraMaterialButton
             // 
-            this.kruskalutaFlatButton.AutoSize = true;
-            this.kruskalutaFlatButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.kruskalutaFlatButton.Depth = 0;
-            this.kruskalutaFlatButton.Icon = null;
-            this.kruskalutaFlatButton.Location = new System.Drawing.Point(460, 57);
-            this.kruskalutaFlatButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.kruskalutaFlatButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.kruskalutaFlatButton.Name = "kruskalutaFlatButton";
-            this.kruskalutaFlatButton.Primary = false;
-            this.kruskalutaFlatButton.Size = new System.Drawing.Size(81, 36);
-            this.kruskalutaFlatButton.TabIndex = 9;
-            this.kruskalutaFlatButton.Text = "Kruskal";
-            this.kruskalutaFlatButton.UseVisualStyleBackColor = true;
-            this.kruskalutaFlatButton.Click += new System.EventHandler(this.kruskalutaFlatButton_Click);
+            this.dijkstraMaterialButton.AutoSize = true;
+            this.dijkstraMaterialButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.dijkstraMaterialButton.Depth = 0;
+            this.dijkstraMaterialButton.Icon = null;
+            this.dijkstraMaterialButton.Location = new System.Drawing.Point(460, 87);
+            this.dijkstraMaterialButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.dijkstraMaterialButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.dijkstraMaterialButton.Name = "dijkstraMaterialButton";
+            this.dijkstraMaterialButton.Primary = false;
+            this.dijkstraMaterialButton.Size = new System.Drawing.Size(84, 36);
+            this.dijkstraMaterialButton.TabIndex = 11;
+            this.dijkstraMaterialButton.Text = "Dijkstra";
+            this.dijkstraMaterialButton.UseVisualStyleBackColor = true;
+            this.dijkstraMaterialButton.Click += new System.EventHandler(this.dijkstraMaterialButton_Click);
             // 
             // MainForm
             // 
@@ -722,6 +769,9 @@
         private MaterialSkin.Controls.MaterialLabel totalRutaMaterialLabel;
         private MaterialSkin.Controls.MaterialFlatButton kruskalutaFlatButton;
         private MaterialSkin.Controls.MaterialFlatButton PrimRutaFlatButton;
+        private MaterialSkin.Controls.MaterialFlatButton dijkstraMaterialButton;
+        private MaterialSkin.Controls.MaterialListView OrigenRutaMaterialListView;
+        private System.Windows.Forms.ColumnHeader origenColumnHeader;
     }
 }
 

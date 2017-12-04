@@ -23,7 +23,8 @@ namespace Airline
             Graph graph = new Graph();
             //graphFromDisk(ref graph, flyList);
             //graph.imprime();
-            graph = testKruskal();
+            //graph = testKruskal();
+            graph = testDijkstra();
             // program auoconfig
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -272,6 +273,35 @@ namespace Airline
 
         }
 
+        static Graph testDijkstra()
+        {
+            var grafiti = new Graph();
 
+            grafiti.addVertex('A');
+            grafiti.addVertex('B');
+            grafiti.addVertex('C');
+            grafiti.addVertex('D');
+            grafiti.addVertex('E');
+            grafiti.addVertex('F');
+            grafiti.addVertex('G');
+
+            grafiti.createAdy('A', 'B', 60, 60);
+            grafiti.createAdy('A', 'C', 50, 50);
+            grafiti.createAdy('A', 'G', 90, 90);
+            grafiti.createAdy('B', 'C', 10, 10);
+            grafiti.createAdy('C', 'G', 10, 10);
+            grafiti.createAdy('C', 'D', 20, 20);
+            grafiti.createAdy('D', 'E', 40, 40);
+            grafiti.createAdy('D', 'F', 20, 20);
+            grafiti.createAdy('E', 'G', 30, 30);
+            grafiti.createAdy('F', 'E', 10, 10);
+            grafiti.createAdy('G', 'A', 90, 90);
+            grafiti.createAdy('G', 'D', 100, 100);
+
+            grafiti.dijkstra(0, 'A', 'D');
+
+            return grafiti;
+
+        }
     }
 }

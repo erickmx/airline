@@ -33,6 +33,7 @@ namespace Airline
 
         // rutasTab use
         char cityRoute;
+        char cityDestinyRoute;
         int opcRecorrido;
 
         public MainForm(ref GenericList<Vuelo> flyList, Graph graph)
@@ -64,6 +65,7 @@ namespace Airline
 
             // rutasTab config
             this.cityRoute = '\n';
+            this.cityDestinyRoute = '\n';
             this.opcRecorrido = -1;
             this.eliminarCiudadRutaFlatButton.Enabled = false;
             this.startDrawRuta();
@@ -618,67 +620,22 @@ namespace Airline
 
         }
 
-        private int calculateXRuta(int x)
-        {
-            int diameter = 15;
-            int posX = this.rutaPanel.Width;
-            posX = posX / 4;
-            if (x > posX * 0 && x < posX * 1)
-            {
-                return x + diameter;
-            }
-            if (x > posX * 1 && x < posX * 2)
-            {
-                return x + (diameter / 2);
-            }
-            if (x > posX * 2 && x < posX * 3)
-            {
-                return x;
-            }
-            if (x > posX * 3 && x < posX * 4)
-            {
-                return x - diameter;
-            }
-
-            return 0;
-        }
-
-        private int calculateYRuta(int y)
-        {
-            int diameter = 15;
-            int posY = this.rutaPanel.Height + 15;
-            posY = posY / 4;
-            if (y > posY * 0 && y < posY * 1)
-            {
-                return y + diameter;
-            }
-            if (y > posY * 1 && y < posY * 2)
-            {
-                return y + (diameter / 2);
-            }
-            if (y > posY * 2 && y < posY * 3)
-            {
-                return y;
-            }
-            if (y > posY * 3 && y < posY * 4)
-            {
-                return y - diameter;
-            }
-            return 0;
-        }
-
         private void chargeCitysRuta()
         {
             this.ciudadRutaMaterialListView.Items.Clear();
+            this.OrigenRutaMaterialListView.Items.Clear();
 
             string[] arrayString = new string[1];
             int limit = graph.getNodesCount();
 
-            for(int i = 0; i < limit; i++)
+            //string[] arrayString2 = new string[1];
+            for (int i = 0; i < limit; i++)
             {
                 arrayString[0] = graph.getNode(i).getCiudad().getName().ToString();
                 ListViewItem item = new ListViewItem(arrayString);
+                ListViewItem item2 = new ListViewItem(arrayString);
                 this.ciudadRutaMaterialListView.Items.Add(item);
+                this.OrigenRutaMaterialListView.Items.Add(item2);
             }
 
         }
@@ -686,7 +643,10 @@ namespace Airline
         // rutaPanel event
         private void rutaMaterialLabel_Paint(object sender, PaintEventArgs e)
         {
-            //startDrawRuta();
+            if(this.opcRecorrido == -1)
+            {
+                startDrawRuta();
+            }
         }
 
         private void mostrarRutaMaterialFlatButton_Click(object sender, EventArgs e)
@@ -698,6 +658,12 @@ namespace Airline
         private void ciudadRutaMaterialListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.cityRoute = ciudadRutaMaterialListView.FocusedItem.SubItems[0].Text[0];
+            this.eliminarCiudadRutaFlatButton.Enabled = true;
+        }
+
+        private void OrigenRutaMaterialListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.cityDestinyRoute = OrigenRutaMaterialListView.FocusedItem.SubItems[0].Text[0];
             this.eliminarCiudadRutaFlatButton.Enabled = true;
         }
 
@@ -821,6 +787,101 @@ namespace Airline
 
         }
 
+        private void dijkstraMaterialButton_Click(object sender, EventArgs e)
+        {
+            int total = 0;
+            // cityDestiny es el origen y cityRoute es el destino
+            List<DijkstraElement> le = this.graph.dijkstra(this.opcRecorrido, this.cityDestinyRoute,this.cityRoute);
+            startDrawDijkstraRuta(le);
+            foreach(var el in le)
+            {
+                if (el.getWeigth() > total)
+                {
+                    total = el.getWeigth();
+                }
+            }
+            this.totalRutaMaterialLabel.Text = "Total:\n" + total.ToString();
+            this.opcRecorrido = -1;
+        }
+
+        private void startDrawDijkstraRuta(List<DijkstraElement> listEdge)
+        {
+            this.Refresh();
+            chargeCitysRuta();
+            double angulo;
+            double radio;
+            int div = graph.getNodesCount();
+            int x;
+            int y;
+            string nom;
+
+            Pen pluma1 = new Pen(Color.White);
+            Pen pluma2 = new Pen(Color.Red);
+            SolidBrush mensajes = new SolidBrush(Color.White);
+
+            radio = (rutaPanel.Height - 30) / 2;
+            angulo = 2 * Math.PI / div;
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
+            {
+                if (graph.getNode(i).getCiudad().getPos() < 0)
+                {
+                    x = Convert.ToInt32(Math.Cos(i * angulo) * radio + 20 + radio);
+                    y = Convert.ToInt32(Math.Sin(i * angulo) * radio + 20 + radio);
+                    graph.getNode(i).getCiudad().setPos(x, y);
+                }
+                else
+                {
+                    x = graph.getNode(i).getCiudad().getPosX();
+                    y = graph.getNode(i).getCiudad().getPosY();
+                }
+
+                rutaPanel.CreateGraphics().DrawEllipse(pluma2, x - 10, y - 10, 20, 20);
+            }
+
+            int originX = 0;
+            int originY = 0;
+            int destinyX = 0;
+            int destinyY = 0;
+
+            int letterX = 0;
+            int letterY = 0;
+            string letter;
+
+            Pen arista = new Pen(Color.BlueViolet, 1);
+            SolidBrush letterPen = new SolidBrush(Color.White);
+            AdjustableArrowCap arrow = new AdjustableArrowCap(3, 5);
+            arista.CustomEndCap = arrow;
+
+            for (int i = 0; i < listEdge.Count; i++)
+            {
+                originX = listEdge[i].getComming().getCiudad().getPosX();
+                originY = listEdge[i].getComming().getCiudad().getPosY();
+                destinyX = listEdge[i].getNode().getCiudad().getPosX();
+                destinyY = listEdge[i].getNode().getCiudad().getPosY();
+
+                this.rutaPanel.CreateGraphics().DrawLine(arista, originX, originY, destinyX, destinyY);
+
+                letterX = (originX + destinyX) / 2;
+                letterY = (originY + destinyY) / 2;
+
+                letter = listEdge[i].getWeigth().ToString();
+
+                rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, letterPen, letterX, letterY);
+
+            }
+
+            for (int i = 0; i < graph.getNodesCount(); i++)
+            {
+                nom = graph.getNode(i).getCiudad().getName().ToString();
+                x = graph.getNode(i).getCiudad().getPosX();
+                y = graph.getNode(i).getCiudad().getPosY();
+
+                rutaPanel.CreateGraphics().DrawString(nom, DefaultFont, mensajes, x - 5, y - 5);
+
+            }
+
+        }
 
 
         /*

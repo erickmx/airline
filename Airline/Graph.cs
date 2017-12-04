@@ -314,9 +314,9 @@ namespace Airline
 
         private Edge seleccionaFactible(List<Edge> candidatos, string s)
         {
-            foreach(var candidato in candidatos)
+            foreach (var candidato in candidatos)
             {
-                if(perteneceAS(s, candidato.getOrigin()) && !perteneceAS(s, candidato.getDestiny()))
+                if (perteneceAS(s, candidato.getOrigin()) && !perteneceAS(s, candidato.getDestiny()))
                 {
                     return candidato;
                 }
@@ -325,7 +325,7 @@ namespace Airline
                     return candidato;
                 }
             }
-            foreach(var candidato in candidatos)
+            foreach (var candidato in candidatos)
             {
                 if (!perteneceAS(s, candidato.getOrigin()) && !perteneceAS(s, candidato.getDestiny()))
                 {
@@ -348,15 +348,15 @@ namespace Airline
             var S = origen.ToString();
             var arm = new List<Edge>();
 
-            while(S.Length < candidatos.Count)
+            while (S.Length < candidatos.Count)
             {
                 var a = seleccionaFactible(candidatos, S);
-                
+
                 if (a == null)
                 {
                     return arm;
                 }
-                
+
                 arm.Add(a);
 
                 if (perteneceAS(S, a.getOrigin()))
@@ -394,21 +394,39 @@ namespace Airline
         private DijkstraElement buscarElementoDijkstra(List<DijkstraElement> VD, Ady a)
         {
             //DE = DijkstraElement
-            return VD.Find(DE => DE.getNode().getCiudad().getName().Equals(a.getNodo().getCiudad()));
+            return VD.Find(DE => DE.getNode().getCiudad().getName().Equals(a.getNodo().getCiudad().getName()));
         }
 
         // falta g, pero g es el grafo en si
+        /*
         private void actualizarPesos(ref List<DijkstraElement> VD, char n, int p, int opc)
         {
-            var n_g = listaNodos.Find( node => node.getCiudad().getName().Equals(n) );
+            var n_g = listaNodos.Find(node => node.getCiudad().getName().Equals(n));
             var pesoA = 0;
-            foreach(Ady a in n_g.getAdyList())
+            foreach (Ady a in n_g.getAdyList())
             {
                 var ED = buscarElementoDijkstra(VD, a);
                 pesoA = opc == 0 ? a.getPondCosto() : a.getPondTime();
                 if (p + pesoA < ED.getWeigth())
                 {
                     ED.setWeigth(p + pesoA);
+                    ED.setComing(n_g);
+                }
+            }
+        }
+        */
+        private void actualizarPesos(ref List<DijkstraElement> VD, Node n_g, int p, int opc)
+        {
+            //var n_g = listaNodos.Find(node => node.getCiudad().getName().Equals(n));
+            var pesoA = 0;
+            foreach (Ady a in n_g.getAdyList())
+            {
+                var ED = buscarElementoDijkstra(VD, a);
+                pesoA = opc == 0 ? a.getPondCosto() : a.getPondTime();
+                if (p + pesoA < ED.getWeigth())
+                {
+                    ED.setWeigth(p + pesoA);
+                    ED.setComing(n_g);
                 }
             }
         }
@@ -423,17 +441,48 @@ namespace Airline
             ).First();
         }
 
+        private bool allDefinitives(List<DijkstraElement> VD)
+        {
+            return VD.Count(DE => DE.getIsDefinitive()) == VD.Count;
+        }
+
         public List<DijkstraElement> dijkstra(int opc, char origin, char destiny)
         {
             //vector dijkstra
             var VD = inicialzaVectorDijkstra();
+            // arbol de expansion minimo
+            var AEM = new List<DijkstraElement>();
+
+            VD.Find(DE => DE.getNode().getCiudad().getName().Equals(origin)).setIsDefinitive(true);
+            foreach (var DE in VD)
+            {
+                Console.WriteLine("Nodo: " + DE.getNode().getCiudad().getName() + " Peso: " + DE.getWeigth() + " definitivo: " + DE.getIsDefinitive());
+            }
             // nodo inicial
-            var n = listaNodos.Find( nodo => nodo.getCiudad().getName().Equals(origin));
+            //var n = listaNodos.Find( nodo => nodo.getCiudad().getName().Equals(origin));
+            var n = VD.Find(DE => DE.getNode().getCiudad().getName().Equals(origin));
             // peso
             var p = 0;
-            actualizarPesos(ref VD, n.getCiudad().getName(), p, opc);
-            var definitivo = sigDefinitivo(VD);
-            return VD;
+            while (!allDefinitives(VD))
+            {
+                actualizarPesos(ref VD, n.getNode(), p, opc);
+                //var definitivo = sigDefinitivo(VD);
+                n = sigDefinitivo(VD);
+                n.setIsDefinitive(true);
+                Console.WriteLine("Nodo: " + n.getNode().getCiudad().getName() + " Peso " + n.getWeigth());
+                p = n.getWeigth();
+                AEM.Add(n);
+                // Descomentar para hacer que dijkstra se detenga en el destino
+                //if (n.getNode().getCiudad().getName().Equals(destiny))
+                //{
+                //    break;
+                //}
+            }
+            foreach (var DE in AEM)
+            {
+                Console.WriteLine("Nodo: " + DE.getNode().getCiudad().getName() + " Proviene de " + DE.getComming().getCiudad().getName() +" Peso: " + DE.getWeigth() + " definitivo: " + DE.getIsDefinitive());
+            }
+            return AEM;
         }
 
         /////////////////////////////////
