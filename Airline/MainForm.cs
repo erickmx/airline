@@ -795,7 +795,7 @@ namespace Airline
             startDrawDijkstraRuta(le);
             foreach(var el in le)
             {
-                if (el.getWeigth() > total)
+                if (el.getWeigth() > total && el.getWeigth() < 9999999)
                 {
                     total = el.getWeigth();
                 }
@@ -855,19 +855,23 @@ namespace Airline
 
             for (int i = 0; i < listEdge.Count; i++)
             {
-                originX = listEdge[i].getComming().getCiudad().getPosX();
-                originY = listEdge[i].getComming().getCiudad().getPosY();
-                destinyX = listEdge[i].getNode().getCiudad().getPosX();
-                destinyY = listEdge[i].getNode().getCiudad().getPosY();
+                if (listEdge[i].getComming() != null)
+                {
+                    originX = listEdge[i].getComming().getCiudad().getPosX();
+                    originY = listEdge[i].getComming().getCiudad().getPosY();
+                    destinyX = listEdge[i].getNode().getCiudad().getPosX();
+                    destinyY = listEdge[i].getNode().getCiudad().getPosY();
 
-                this.rutaPanel.CreateGraphics().DrawLine(arista, originX, originY, destinyX, destinyY);
+                    this.rutaPanel.CreateGraphics().DrawLine(arista, originX, originY, destinyX, destinyY);
 
-                letterX = (originX + destinyX) / 2;
-                letterY = (originY + destinyY) / 2;
+                    letterX = (originX + destinyX) / 2;
+                    letterY = (originY + destinyY) / 2;
 
-                letter = listEdge[i].getWeigth().ToString();
+                    letter = listEdge[i].getWeigth().ToString();
 
-                rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, letterPen, letterX, letterY);
+                    rutaPanel.CreateGraphics().DrawString(letter, DefaultFont, letterPen, letterX, letterY);
+
+                }
 
             }
 

@@ -285,8 +285,6 @@ namespace Airline
                 Edge candidato = seleccionaCandidatos(candidatos);
                 if (!sameConnectedComponent(componentesConexos, candidato))
                 {
-                    // componentesConexos.ForEach(c => Console.WriteLine(c));
-                    // Console.WriteLine("--------------------------------------------------------");
                     arm.Add(candidato);
                     component1 = buscaEnCC(componentesConexos, candidato.getOrigin().getCiudad().getName().ToString());
                     component2 = buscaEnCC(componentesConexos, candidato.getDestiny().getCiudad().getName().ToString());
@@ -396,25 +394,7 @@ namespace Airline
             //DE = DijkstraElement
             return VD.Find(DE => DE.getNode().getCiudad().getName().Equals(a.getNodo().getCiudad().getName()));
         }
-
-        // falta g, pero g es el grafo en si
-        /*
-        private void actualizarPesos(ref List<DijkstraElement> VD, char n, int p, int opc)
-        {
-            var n_g = listaNodos.Find(node => node.getCiudad().getName().Equals(n));
-            var pesoA = 0;
-            foreach (Ady a in n_g.getAdyList())
-            {
-                var ED = buscarElementoDijkstra(VD, a);
-                pesoA = opc == 0 ? a.getPondCosto() : a.getPondTime();
-                if (p + pesoA < ED.getWeigth())
-                {
-                    ED.setWeigth(p + pesoA);
-                    ED.setComing(n_g);
-                }
-            }
-        }
-        */
+        
         private void actualizarPesos(ref List<DijkstraElement> VD, Node n_g, int p, int opc)
         {
             //var n_g = listaNodos.Find(node => node.getCiudad().getName().Equals(n));
@@ -454,10 +434,6 @@ namespace Airline
             var AEM = new List<DijkstraElement>();
 
             VD.Find(DE => DE.getNode().getCiudad().getName().Equals(origin)).setIsDefinitive(true);
-            foreach (var DE in VD)
-            {
-                Console.WriteLine("Nodo: " + DE.getNode().getCiudad().getName() + " Peso: " + DE.getWeigth() + " definitivo: " + DE.getIsDefinitive());
-            }
             // nodo inicial
             //var n = listaNodos.Find( nodo => nodo.getCiudad().getName().Equals(origin));
             var n = VD.Find(DE => DE.getNode().getCiudad().getName().Equals(origin));
@@ -478,11 +454,44 @@ namespace Airline
                 //    break;
                 //}
             }
-            foreach (var DE in AEM)
+            /*
+            foreach(var ED in VD)
             {
-                Console.WriteLine("Nodo: " + DE.getNode().getCiudad().getName() + " Proviene de " + DE.getComming().getCiudad().getName() +" Peso: " + DE.getWeigth() + " definitivo: " + DE.getIsDefinitive());
+                if(ED.getComming() != null)
+                {
+
+                    Console.Write(ED.getNode().getCiudad().getName() + " <- ");
+                    Console.Write(ED.getComming().getCiudad().getName() + "\t");
+                    Console.Write(ED.getWeigth() + "\n");
+                }
             }
+            */
+            makeARM(AEM, origin);
             return AEM;
+        }
+
+        public string makeARM(List<DijkstraElement> AEM, char origin)
+        {
+            for(int i = 0; i < AEM.Count; i++)
+            {
+                Console.Write(AEM[i].getNode().getCiudad().getName() + " <- ");
+                if (AEM[i].getComming() != null)
+                {
+                    var current = AEM[i].getComming();
+                    while(current != null)
+                    {
+                        var data = AEM.Find( DE => DE.getNode().getCiudad().getName().Equals(current.getCiudad().getName()) );
+                        Console.Write(current.getCiudad().getName() + " <- ");
+                        current = null;
+                        if (data != null)
+                        {
+                            current = data.getComming();
+                        }
+                    }
+                }
+                Console.Write( AEM[i].getWeigth() + "\n");
+            }
+            return "";
         }
 
         /////////////////////////////////

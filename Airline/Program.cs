@@ -21,10 +21,10 @@ namespace Airline
             readFromDisk(ref flyList);
 
             Graph graph = new Graph();
-            graphFromDisk(ref graph, flyList);
+            //graphFromDisk(ref graph, flyList);
             //graph.imprime();
             //graph = testKruskal();
-            //graph = testDijkstra();
+            graph = testDijkstra();
 
             // program auoconfig
             Application.EnableVisualStyles();
@@ -285,20 +285,26 @@ namespace Airline
             grafiti.addVertex('E');
             grafiti.addVertex('F');
             grafiti.addVertex('G');
+            grafiti.addVertex('H');
+            grafiti.addVertex('I');
+            grafiti.addVertex('J');
 
-            grafiti.createAdy('A', 'B', 60, 60);
-            grafiti.createAdy('A', 'C', 50, 50);
-            grafiti.createAdy('A', 'G', 90, 90);
-            grafiti.createAdy('B', 'C', 10, 10);
-            grafiti.createAdy('C', 'G', 10, 10);
-            grafiti.createAdy('C', 'D', 20, 20);
-            grafiti.createAdy('D', 'E', 40, 40);
-            grafiti.createAdy('D', 'F', 20, 20);
-            grafiti.createAdy('E', 'G', 30, 30);
-            grafiti.createAdy('F', 'E', 10, 10);
-            grafiti.createAdy('G', 'A', 90, 90);
-            grafiti.createAdy('G', 'D', 100, 100);
 
+            grafiti.createAdy('A', 'B', 1, 1);
+            grafiti.createAdy('A', 'C', 25, 25);
+            grafiti.createAdy('C', 'B', 30, 30);
+            grafiti.createAdy('C', 'E', 50, 50);
+            grafiti.createAdy('B', 'E', 52, 52);
+            grafiti.createAdy('B', 'D', 70, 70);
+            grafiti.createAdy('E', 'F', 5, 5);
+            grafiti.createAdy('F', 'E', 5, 5);
+            grafiti.createAdy('F', 'D', 6, 6);
+            grafiti.createAdy('F', 'G', 7, 7);
+
+            grafiti.createAdy('H', 'I', 62, 62);
+            grafiti.createAdy('H', 'J', 90, 90);
+            grafiti.createAdy('I', 'J', 68, 68);
+            
             grafiti.dijkstra(0, 'A', 'D');
 
             return grafiti;
